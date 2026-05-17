@@ -21,39 +21,18 @@ Descubre espacios cómodos y modernos para disfrutar tu estadía.
 <section class="filters-section">
 
 <div class="filter-box">
-
-<label>Tipo de habitación</label>
-
-<select>
-
-<option>Todas</option>
-<option>Estandar King</option>
-<option>Estandar Double</option>
-<option>Ejecutiva King</option>
-<option>Habitacion premium</option>
-<option>Apart hotel</option>
-<option>Junior suite</option>
-<option>Suite familiar</option>
-<option>Suite presidencial</option>
-<option>Habitaciones accesibles</option>
-
-</select>
-
-</div>
-
-<div class="filter-box">
 <label>Entrada</label>
-<input type="date">
+<input type="date" id="check-in">
 </div>
 
 <div class="filter-box">
 <label>Salida</label>
-<input type="date">
+<input type="date" id="check-out">
 </div>
 
 <div class="filter-box">
 <label>Personas</label>
-<input type="number" placeholder="0">
+<input type="number" id="cantPersonas" placeholder="0">
 </div>
 
 </section>

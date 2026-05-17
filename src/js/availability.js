@@ -1,0 +1,97 @@
+const checkInInput = document.getElementById("check-in")
+const checkOutInput = document.getElementById("check-out")
+const cantPersonas = document.getElementById("cantPersonas")
+
+let hoy, yearHoy, monthHoy, dayHoy, 
+    fechaCheckIn, fechaCheckOut, yearCheckIn, yearCheckOut, 
+    monthCheckIn, monthCheckOut, 
+    dayCheckIn, dayCheckOut;
+
+checkInInput.addEventListener("change", () => {
+
+    hoy = new Date();
+    yearHoy = hoy.getFullYear();
+    monthHoy = hoy.getMonth() + 1;
+    dayHoy = hoy.getDate() + 1;
+
+
+    fechaCheckIn = new Date(checkInInput.value);
+    yearCheckIn = fechaCheckIn.getFullYear();
+    monthCheckIn = fechaCheckIn.getMonth() + 1;
+    dayCheckIn = fechaCheckIn.getDate() + 1;
+
+    console.log(yearCheckIn);
+    console.log(monthCheckIn);
+    console.log(dayCheckIn);
+
+    compararYears();
+    compararHoyConCheckIn();
+    compararCheckInConCheckOut();
+
+});
+
+
+checkOutInput.addEventListener("change", () => {
+
+    fechaCheckOut = new Date(checkOutInput.value);
+
+    yearCheckOut = fechaCheckOut.getFullYear();
+
+    monthCheckOut = fechaCheckOut.getMonth() + 1;
+
+    dayCheckOut = fechaCheckOut.getDate() + 1;
+
+    console.log(yearCheckOut);
+    console.log(monthCheckOut);
+    console.log(dayCheckOut);
+
+    compararYears();
+    compararCheckInConCheckOut();
+
+});
+
+function compararYears() {
+
+    if (!yearCheckIn || !yearCheckOut) return;
+
+
+    if (yearCheckIn === yearCheckOut) {
+
+        console.log("Mismo año");
+
+    } else {
+
+        console.log("Años diferentes");
+
+    }
+}
+
+function compararHoyConCheckIn() {
+    if (!fechaCheckIn) return;
+
+    if (fechaCheckIn < hoy) {
+        console.log("No tiene sentido que la fecha de check in sea antes de hoy")
+        checkInInput.value = "";
+    }
+}
+function compararCheckInConCheckOut() {
+    if (!fechaCheckIn || !fechaCheckOut) return;
+
+    if (fechaCheckIn >= fechaCheckOut) {
+        console.log("No tiene sentido que la fecha de checkout sea antes o el mismo de la fecha de check in")
+        checkOutInput.value = "";
+    }
+}
+
+
+function esBisiesto(yearCheckIn) {
+
+    if (
+        (year % 4 === 0 && year % 100 !== 0)
+        || year % 400 === 0
+    ) {
+        return true;
+    }
+
+    return false;
+}
