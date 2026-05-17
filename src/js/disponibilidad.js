@@ -100,7 +100,7 @@ function restarDisponibilidad(tipoHabitacion) {
 }
 
 
-module.exports = {
+export {
     leerDisponibilidad,
     guardarDisponibilidad,
     hayDisponibilidad,

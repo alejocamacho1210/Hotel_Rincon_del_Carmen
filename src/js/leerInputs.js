@@ -1,12 +1,11 @@
+const defaultState = document.getElementById("default-state")
+const roomsSection = document.getElementById("rooms-section")
+
 const checkInInput = document.getElementById("check-in")
 const checkOutInput = document.getElementById("check-out")
 const cantPersonas = document.getElementById("cantPersonas")
-const {
-    leerDisponibilidad,
-    guardarDisponibilidad, 
-    hayDisponibilidad,
-    restarDisponibilidad
-} = require("./disponibilidad")
+
+
 
 let hoy, yearHoy, monthHoy, dayHoy, 
     fechaCheckIn, fechaCheckOut, yearCheckIn, yearCheckOut, 
@@ -82,3 +81,41 @@ function diasAPagar() {
     console.log(numeroDeDias);
     return numeroDeDias;
 }
+
+function verificarFiltros() {
+
+    const checkIn = checkInInput.value;
+    const checkOut = checkOutInput.value;
+    const personas = cantPersonas.value;
+
+    // SI LOS 3 ESTAN LLENOS
+    if (checkIn && checkOut && personas) {
+
+        defaultState.style.display = "none";
+
+        roomsSection.innerHTML = `
+
+        <article class="room-card">
+            <h2>Habitaciones disponibles</h2>
+            <p>Aquí aparecerán las habitaciones.</p>
+        </article>
+
+        `;
+
+    } 
+    
+    // SI ALGUNO ESTA VACIO
+    else {
+
+        defaultState.style.display = "flex";
+
+        roomsSection.innerHTML = "";
+
+    }
+}
+
+checkInInput.addEventListener("input", verificarFiltros);
+
+checkOutInput.addEventListener("input", verificarFiltros);
+
+cantPersonas.addEventListener("input", verificarFiltros);

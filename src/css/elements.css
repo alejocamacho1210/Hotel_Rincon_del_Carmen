@@ -426,3 +426,20 @@
     transform:scale(1.02);
 }
 
+.default-state{
+
+display:flex;
+justify-content:center;
+align-items:center;
+margin-top:40px;
+
+}
+
+.default-image{
+
+width:100%;
+max-width:900px;
+border-radius:20px;
+object-fit:cover;
+
+}
