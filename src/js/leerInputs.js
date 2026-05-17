@@ -1,6 +1,12 @@
 const checkInInput = document.getElementById("check-in")
 const checkOutInput = document.getElementById("check-out")
 const cantPersonas = document.getElementById("cantPersonas")
+const {
+    leerDisponibilidad,
+    guardarDisponibilidad, 
+    hayDisponibilidad,
+    restarDisponibilidad
+} = require("./disponibilidad")
 
 let hoy, yearHoy, monthHoy, dayHoy, 
     fechaCheckIn, fechaCheckOut, yearCheckIn, yearCheckOut, 
@@ -24,7 +30,7 @@ checkInInput.addEventListener("change", () => {
     console.log(monthCheckIn);
     console.log(dayCheckIn);
 
-    compararYears();
+    diasAPagar();
     compararHoyConCheckIn();
     compararCheckInConCheckOut();
 
@@ -45,26 +51,10 @@ checkOutInput.addEventListener("change", () => {
     console.log(monthCheckOut);
     console.log(dayCheckOut);
 
-    compararYears();
+    diasAPagar();
     compararCheckInConCheckOut();
 
 });
-
-function compararYears() {
-
-    if (!yearCheckIn || !yearCheckOut) return;
-
-
-    if (yearCheckIn === yearCheckOut) {
-
-        console.log("Mismo año");
-
-    } else {
-
-        console.log("Años diferentes");
-
-    }
-}
 
 function compararHoyConCheckIn() {
     if (!fechaCheckIn) return;
@@ -84,14 +74,11 @@ function compararCheckInConCheckOut() {
 }
 
 
-function esBisiesto(yearCheckIn) {
+function diasAPagar() {
+    if (!fechaCheckIn || !fechaCheckOut) return;
 
-    if (
-        (year % 4 === 0 && year % 100 !== 0)
-        || year % 400 === 0
-    ) {
-        return true;
-    }
-
-    return false;
+    const milisegundosPorDia = 1000 * 60 * 60 * 24;
+    const numeroDeDias = (fechaCheckOut-fechaCheckIn) / milisegundosPorDia;  
+    console.log(numeroDeDias);
+    return numeroDeDias;
 }

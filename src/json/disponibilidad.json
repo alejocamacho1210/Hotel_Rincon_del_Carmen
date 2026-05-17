@@ -1,0 +1,28 @@
+[
+  {
+    "id": 1,
+    "tipo": "King Deluxe",
+    "cantidadDisponibles": 5,
+    "descripcion": "Habitación amplia con vista al mar",
+    "ubicacion": "Torre Norte",
+    "servicios": [
+      "WiFi",
+      "TV",
+      "Jacuzzi",
+      "Mini bar"
+    ]
+  },
+
+  {
+    "id": 2,
+    "tipo": "Suite Familiar",
+    "cantidadDisponibles": 3,
+    "descripcion": "Ideal para familias",
+    "ubicacion": "Torre Sur",
+    "servicios": [
+      "WiFi",
+      "TV",
+      "Cocina"
+    ]
+  }
+]
