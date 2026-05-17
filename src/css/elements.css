@@ -72,6 +72,7 @@
     color: #475569;
     line-height: 1.5;
 }
+<<<<<<< HEAD
 
 /* ===== Página 1 ===== */
 
@@ -80,12 +81,25 @@
     padding:.6rem 1rem;
     border-radius:30px;
     background:rgba(15,23,42,.7);
+=======
+input{
+    border: none;
+    outline: none;
+}
+iframe{
+    display: block;
+}
+.reservation-title{
+    font-size:2.5rem;
+    font-weight:800;
+>>>>>>> 48bd3b5642e8f1731e89e1a6be9db2a151a3c7b7
     color:white;
     font-size:.78rem;
     font-weight:700;
     color:rgba(255,255,255,.92);
     letter-spacing:1px;
 }
+<<<<<<< HEAD
 .hero-title{
     font-size:3.2rem;
     font-weight:800;
@@ -94,10 +108,14 @@
     text-shadow:0 5px 15px rgba(0,0,0,.3);
 }
 .hero-text{
+=======
+.reservation-subtitle{
+>>>>>>> 48bd3b5642e8f1731e89e1a6be9db2a151a3c7b7
     font-size:1rem;
     line-height:1.7;
     color:rgba(255, 255, 255, 0.92);
 }
+<<<<<<< HEAD
 .section-title{
     margin-bottom:1.3rem;
     font-size:2rem;
@@ -137,6 +155,15 @@
 }
 
 .contact-form input{
+=======
+.filter-box label{
+    font-size:.95rem;
+    font-weight:600;
+    color:#0f172a;
+}
+.filter-box input,
+.filter-box select{
+>>>>>>> 48bd3b5642e8f1731e89e1a6be9db2a151a3c7b7
     width:100%;
     padding:1rem;
     border:none;
@@ -146,12 +173,65 @@
     font-size:1rem;
     color:#334155;
 }
+<<<<<<< HEAD
 .contact-form button{
     border:none;
     padding:1rem;
     border-radius:18px;
     background:#2563eb;
     color:white;
+=======
+.hero-tag{
+    width:max-content;
+    padding:.6rem 1rem;
+    border-radius:30px;
+    background:rgba(255,255,255,.14);
+    color:white;
+    font-size:.78rem;
+    font-weight:700;
+    letter-spacing:1px;
+    backdrop-filter:blur(10px);
+}
+.hero-title{
+    font-size:2.7rem;
+    font-weight:800;
+    line-height:1.05;
+    color:white;
+}
+.hero-text{
+    font-size:1rem;
+    line-height:1.7;
+    color:rgba(255,255,255,.82);
+}
+.section-title{
+    margin-bottom:1.3rem;
+    font-size:2rem;
+    font-weight:800;
+    color:#0f172a;
+}
+.contact-title{
+    font-size:2rem;
+    font-weight:800;
+    color:white;
+}
+.gallery-card{
+    overflow:hidden;
+    border-radius:24px;
+    background:white;
+    box-shadow:0 10px 30px rgba(15,23,42,.08);
+    transition:.3s;
+}
+.gallery-card:hover{
+    transform:translateY(-5px);
+}
+.gallery-card img{
+    width:100%;
+    height:170px;
+    object-fit:cover;
+    border-radius:18px;
+}
+.gallery-info h3{
+>>>>>>> 48bd3b5642e8f1731e89e1a6be9db2a151a3c7b7
     font-size:1rem;
     font-weight:700;
     cursor:pointer;
@@ -184,6 +264,7 @@
     font-weight:800;
     color:#0f172a;
 }
+<<<<<<< HEAD
 .modal-form input{
     width:100%;
     padding:1rem;
@@ -320,3 +401,34 @@
 }
 
 /* ===== Página 2 ===== */
+=======
+.gallery-info p{
+    font-size:.82rem;
+    line-height:1.5;
+    color:#64748b;
+}
+.contact-form input{
+    width:100%;
+    padding:1rem;
+    border:none;
+    outline:none;
+    border-radius:18px;
+    background:white;
+    font-size:1rem;
+    color:#334155;
+}
+.contact-form button{
+    border:none;
+    padding:1rem;
+    border-radius:18px;
+    background:#2563eb;
+    color:white;
+    font-size:1rem;
+    font-weight:700;
+    cursor:pointer;
+    transition:.3s;
+}
+.contact-form button:hover{
+    transform:scale(1.02);
+}
+>>>>>>> 48bd3b5642e8f1731e89e1a6be9db2a151a3c7b7
