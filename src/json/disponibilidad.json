@@ -1,10 +1,98 @@
 [
   {
     "id": 1,
-    "tipo": "King Deluxe",
-    "cantidadDisponibles": 5,
+    "tipo": "Estandar King",
+    "cantidadDisponibles": 40,
     "descripcion": "Habitación amplia con vista al mar",
     "ubicacion": "Torre Norte",
+    "capacidad minima": "1",
+    "capacidad maxima": "2",
+    "precio": 220000,
+    "servicios": [
+      "WiFi",
+      "TV",
+      "Jacuzzi",
+      "Mini bar"
+    ]
+  },
+
+  {
+    "id": 2,
+    "tipo": "Estandar Double",
+    "cantidadDisponibles": 40,
+    "descripcion": "Habitación amplia con vista al mar",
+    "ubicacion": "Torre Norte",
+    "capacidad minima": "2",
+    "capacidad maxima": "4",
+    "precio": 340000,
+    "servicios": [
+      "WiFi",
+      "TV",
+      "Jacuzzi",
+      "Mini bar"
+    ]    
+  },
+
+  {
+    "id": 3,
+    "tipo": "Ejecutiva King",
+    "cantidadDisponibles": 30,
+    "descripcion": "Habitación amplia con vista al mar",
+    "ubicacion": "Torre Norte",
+    "capacidad minima": "1",
+    "capacidad maxima": "2",
+    "precio": 420000,
+    "servicios": [
+      "WiFi",
+      "TV",
+      "Jacuzzi",
+      "Mini bar"
+    ]
+  },
+
+  {
+    "id": 4,
+    "tipo": "Habitacion premium",
+    "cantidadDisponibles": 30,
+    "descripcion": "Habitación amplia con vista al mar",
+    "ubicacion": "Torre Norte",
+    "capacidad minima": "2",
+    "capacidad maxima": "3",
+    "precio": 520000,
+    "servicios": [
+      "WiFi",
+      "TV",
+      "Jacuzzi",
+      "Mini bar"
+    ]
+  },
+
+  {
+    "id": 1,
+    "tipo": "Apart Hotel",
+    "cantidadDisponibles": 30,
+    "descripcion": "Habitación amplia con vista al mar",
+    "ubicacion": "Torre Norte",
+    "capacidad minima": "2",
+    "capacidad maxima": "4",
+    "precio": 650000,
+    "servicios": [
+      "WiFi",
+      "TV",
+      "Jacuzzi",
+      "Mini bar"
+    ]
+  },
+
+  {
+    "id": 1,
+    "tipo": "Junior Suite",
+    "cantidadDisponibles": 40,
+    "descripcion": "Habitación amplia con vista al mar",
+    "ubicacion": "Torre Norte",
+    "capacidad minima": "2",
+    "capacidad maxima": "3",
+    "precio": 780000,
     "servicios": [
       "WiFi",
       "TV",
@@ -16,13 +104,50 @@
   {
     "id": 2,
     "tipo": "Suite Familiar",
-    "cantidadDisponibles": 3,
+    "cantidadDisponibles": 20,
     "descripcion": "Ideal para familias",
     "ubicacion": "Torre Sur",
+    "capacidad minima": "4",
+    "capacidad maxima": "6",
+    "precio": 1050000,
     "servicios": [
       "WiFi",
       "TV",
       "Cocina"
+    ]
+  },
+
+  {
+    "id": 1,
+    "tipo": "Suite Presidencial",
+    "cantidadDisponibles": 20,
+    "descripcion": "Habitación amplia con vista al mar",
+    "ubicacion": "Torre Norte",
+    "capacidad minima": "4",
+    "capacidad maxima": "6",
+    "precio": 2400000,
+    "servicios": [
+      "WiFi",
+      "TV",
+      "Jacuzzi",
+      "Mini bar"
+    ]
+  },
+
+  {
+    "id": 1,
+    "tipo": "Estandar King",
+    "cantidadDisponibles": 20,
+    "descripcion": "Habitación amplia con vista al mar",
+    "ubicacion": "Torre Norte",
+    "capacidad minima": "1",
+    "capacidad maxima": "2",
+    "precio": 240000,
+    "servicios": [
+      "WiFi",
+      "TV",
+      "Jacuzzi",
+      "Mini bar"
     ]
   }
 ]
