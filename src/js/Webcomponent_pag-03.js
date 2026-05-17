@@ -60,12 +60,7 @@ class ContactPage extends HTMLElement {
                          <h3>WhatsApp</h3>
                          <p>+57 320 654 8891</p>
                 </div>
-
-<<<<<<< HEAD
                 </div>
-
-=======
->>>>>>> 48bd3b5642e8f1731e89e1a6be9db2a151a3c7b7
             </section>
 
 
@@ -89,8 +84,4 @@ class ContactPage extends HTMLElement {
         `;
     }
 }
-<<<<<<< HEAD
-=======
-
->>>>>>> 48bd3b5642e8f1731e89e1a6be9db2a151a3c7b7
 customElements.define("contact-page", ContactPage);

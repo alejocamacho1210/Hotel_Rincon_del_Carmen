@@ -368,8 +368,6 @@ rooms.forEach((room,index)=>{
 })
 }
 
-
-
 const roomModal = document.querySelector(".room-modal")
 
 const roomPreview = document.querySelector(".room-preview")

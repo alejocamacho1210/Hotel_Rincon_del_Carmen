@@ -72,7 +72,6 @@
     color: #475569;
     line-height: 1.5;
 }
-<<<<<<< HEAD
 
 /* ===== Página 1 ===== */
 
@@ -81,41 +80,24 @@
     padding:.6rem 1rem;
     border-radius:30px;
     background:rgba(15,23,42,.7);
-=======
-input{
-    border: none;
-    outline: none;
-}
-iframe{
-    display: block;
-}
-.reservation-title{
-    font-size:2.5rem;
-    font-weight:800;
->>>>>>> 48bd3b5642e8f1731e89e1a6be9db2a151a3c7b7
     color:white;
     font-size:.78rem;
     font-weight:700;
-    color:rgba(255,255,255,.92);
     letter-spacing:1px;
 }
-<<<<<<< HEAD
 .hero-title{
-    font-size:3.2rem;
-    font-weight:800;
-    line-height:1.05;
+    font-size:3.6rem;
+    font-weight:900;
+    line-height:1.02;
     color:white;
-    text-shadow:0 5px 15px rgba(0,0,0,.3);
+    text-shadow:
+    0 6px 20px rgba(0,0,0,.35);
 }
 .hero-text{
-=======
-.reservation-subtitle{
->>>>>>> 48bd3b5642e8f1731e89e1a6be9db2a151a3c7b7
-    font-size:1rem;
-    line-height:1.7;
-    color:rgba(255, 255, 255, 0.92);
+    font-size:1.05rem;
+    line-height:1.8;
+    color:rgba(255,255,255,.9);
 }
-<<<<<<< HEAD
 .section-title{
     margin-bottom:1.3rem;
     font-size:2rem;
@@ -144,7 +126,7 @@ iframe{
     border-radius:18px;
 }
 .gallery-info h3{
-    font-size:1.2rem;
+    font-size:1rem;
     font-weight:700;
     color:#0f172a;
 }
@@ -153,17 +135,7 @@ iframe{
     line-height:1.5;
     color:#64748b;
 }
-
 .contact-form input{
-=======
-.filter-box label{
-    font-size:.95rem;
-    font-weight:600;
-    color:#0f172a;
-}
-.filter-box input,
-.filter-box select{
->>>>>>> 48bd3b5642e8f1731e89e1a6be9db2a151a3c7b7
     width:100%;
     padding:1rem;
     border:none;
@@ -173,65 +145,12 @@ iframe{
     font-size:1rem;
     color:#334155;
 }
-<<<<<<< HEAD
 .contact-form button{
     border:none;
     padding:1rem;
     border-radius:18px;
     background:#2563eb;
     color:white;
-=======
-.hero-tag{
-    width:max-content;
-    padding:.6rem 1rem;
-    border-radius:30px;
-    background:rgba(255,255,255,.14);
-    color:white;
-    font-size:.78rem;
-    font-weight:700;
-    letter-spacing:1px;
-    backdrop-filter:blur(10px);
-}
-.hero-title{
-    font-size:2.7rem;
-    font-weight:800;
-    line-height:1.05;
-    color:white;
-}
-.hero-text{
-    font-size:1rem;
-    line-height:1.7;
-    color:rgba(255,255,255,.82);
-}
-.section-title{
-    margin-bottom:1.3rem;
-    font-size:2rem;
-    font-weight:800;
-    color:#0f172a;
-}
-.contact-title{
-    font-size:2rem;
-    font-weight:800;
-    color:white;
-}
-.gallery-card{
-    overflow:hidden;
-    border-radius:24px;
-    background:white;
-    box-shadow:0 10px 30px rgba(15,23,42,.08);
-    transition:.3s;
-}
-.gallery-card:hover{
-    transform:translateY(-5px);
-}
-.gallery-card img{
-    width:100%;
-    height:170px;
-    object-fit:cover;
-    border-radius:18px;
-}
-.gallery-info h3{
->>>>>>> 48bd3b5642e8f1731e89e1a6be9db2a151a3c7b7
     font-size:1rem;
     font-weight:700;
     cursor:pointer;
@@ -264,7 +183,6 @@ iframe{
     font-weight:800;
     color:#0f172a;
 }
-<<<<<<< HEAD
 .modal-form input{
     width:100%;
     padding:1rem;
@@ -286,16 +204,6 @@ iframe{
     cursor:pointer;
 }
 .user-btn{
-    border:none;
-    padding:.9rem 1.3rem;
-    border-radius:18px;
-    background:#2563eb;
-    color:white;
-    font-size:.9rem;
-    font-weight:700;
-    cursor:pointer;
-}
-.user-btn{
     padding:.9rem 1.2rem;
     border:none;
     border-radius:18px;
@@ -306,6 +214,7 @@ iframe{
     box-shadow:
     0 8px 20px rgba(0,0,0,.08);
 }
+
 .dropdown{
     position:absolute;
     top:70px;
@@ -318,19 +227,106 @@ iframe{
     box-shadow:
     0 10px 30px rgba(0,0,0,.12);
 }
+
 .logout-btn{
     padding:.9rem 1.2rem;
     border:none;
     border-radius:14px;
     background:#ef4444;
     color:white;
+
     font-size:.9rem;
     font-weight:700;
+
     transition:.25s;
 }
+
 .logout-btn:hover{
     transform:scale(1.03);
+
     background:#dc2626;
+}
+.contact-sub{
+    color:rgba(255,255,255,.7);
+    font-size:.9rem;
+    margin-top:-1rem;
+}
+.room-features{
+    display:flex;
+    flex-wrap:wrap;
+    gap:.5rem;
+}
+.room-features span{
+    padding:.45rem .7rem;
+    border-radius:12px;
+    background:#eff6ff;
+    color:#2563eb;
+    font-size:.72rem;
+    font-weight:700;
+}
+.room-modal{
+    position:fixed;
+    inset:0;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:2rem;
+    background:rgba(15,23,42,.7);
+    backdrop-filter:blur(12px);
+    z-index:200;
+}
+.room-view{
+    width:100%;
+    max-width:950px;
+    background:white;
+    border-radius:32px;
+    overflow:hidden;
+}
+.room-preview{
+    width:100%;
+    height:500px;
+    object-fit:cover;
+}
+.room-details{
+    padding:2rem;
+}
+.room-title{
+    font-size:2.4rem;
+    font-weight:800;
+    color:#0f172a;
+    margin-bottom:1rem;
+}
+.room-description{
+    font-size:1rem;
+    line-height:1.8;
+    color:#475569;
+}
+.back-room{
+    position:absolute;
+    margin:1.5rem;
+    border:none;
+    padding:.9rem 1.2rem;
+    border-radius:16px;
+    background:#ef4444;
+    color:white;
+    font-weight:700;
+    cursor:pointer;
+}
+.dropdown{
+    position:absolute;
+    top:70px;
+    right:0;
+    background:white;
+    border-radius:18px;
+    padding:.7rem;
+    box-shadow:0 10px 30px rgba(0,0,0,.12);
+}
+.logout-btn{
+    border:none;
+    background:none;
+    color:#ef4444;
+    font-weight:700;
+    cursor:pointer;
 }
 .features-list{
     display:flex;
@@ -338,7 +334,6 @@ iframe{
     gap:.8rem;
     margin-top:1.3rem;
 }
-
 .features-list span{
     padding:.7rem 1rem;
     border-radius:14px;
@@ -399,9 +394,8 @@ iframe{
     box-shadow:
     0 10px 25px rgba(0,0,0,.15);
 }
-
 /* ===== Página 2 ===== */
-=======
+
 .gallery-info p{
     font-size:.82rem;
     line-height:1.5;
@@ -431,4 +425,4 @@ iframe{
 .contact-form button:hover{
     transform:scale(1.02);
 }
->>>>>>> 48bd3b5642e8f1731e89e1a6be9db2a151a3c7b7
+
