@@ -199,6 +199,7 @@ document.querySelectorAll(".gallery-card")
 .forEach((card,index)=>{
     card.onclick = () =>{
         roomModal.style.display = "flex"
+        roomModal.scrollTop = 0
         document.body.style.overflow = "hidden"
         roomPreview.src = rooms[index].image
         roomTitle.textContent = rooms[index].name
@@ -217,4 +218,66 @@ document.querySelectorAll(".gallery-card")
 document.querySelector(".back-room").onclick = () =>{
     roomModal.style.display = "none"
     document.body.style.overflow = ""
+}
+
+document.querySelector(".room-modal").addEventListener("wheel", (e) =>{
+    e.stopPropagation()
+}, { passive: true })
+
+const areas = [
+    {
+        name: "Piscina",
+        image: "../images/piscina.jpeg",
+        description: "Relájate en nuestra piscina con vista panorámica al mar.",
+        features: ["🏊 Acceso libre","🌅 Vista al mar","🌿 Zona de descanso","🍹 Bar en piscina"]
+    },
+    {
+        name: "Jacuzzi",
+        image: "../images/jacuzzi.jpeg",
+        description: "Disfruta de una experiencia de relajación total en nuestro jacuzzi privado.",
+        features: ["♨️ Agua caliente","💆 Zona de spa","🕯️ Ambiente relajante","🛁 Privado"]
+    },
+    {
+        name: "Cocina",
+        image: "../images/cocina.jpeg",
+        description: "Gastronomía de alta calidad preparada por nuestros chefs expertos.",
+        features: ["👨‍🍳 Chef profesional","🍽️ Menú variado","🍱 Bufet"]
+    },
+    {
+        name: "Comedor",
+        image: "../images/comedores.jpeg",
+        description: "Espacios elegantes para disfrutar de una experiencia gastronómica única.",
+        features: ["🍽️ Servicio completo","🕯️ Ambiente elegante","👨‍👩‍👧 Familiar","🎵 Música en vivo"]
+    },
+    {
+        name: "Sala de juegos",
+        image: "../images/sala_de_juegos.jpeg",
+        description: "Diversión garantizada para toda la familia en nuestra sala de entretenimiento.",
+        features: ["🎮 Videojuegos","🎱 Billar","🎲 Juegos de mesa"]
+    },
+    {
+        name: "Canchas deportivas",
+        image: "../images/canchas.jpeg",
+        description: "Disfruta de nuestras canchas deportivas para actividades al aire libre.",
+        features: ["⚽ Fútbol", "🏀 Baloncesto", "🎾 Tenis"]
+    }
+]
+
+const areasGrid = document.querySelector(".areas-grid")
+
+if(areasGrid){
+    areas.forEach(area =>{
+        areasGrid.innerHTML += `
+        <article class="area-card">
+            <img src="${area.image}" alt="${area.name}">
+            <div class="area-info">
+                <h3>${area.name}</h3>
+                <p>${area.description}</p>
+                <div class="features-list">
+                    ${area.features.map(f => `<span>${f}</span>`).join("")}
+                </div>
+            </div>
+        </article>
+        `
+    })
 }
