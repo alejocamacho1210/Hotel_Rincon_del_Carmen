@@ -68,7 +68,7 @@
   },
 
   {
-    "id": 1,
+    "id": 5,
     "tipo": "Apart Hotel",
     "cantidadDisponibles": 30,
     "descripcion": "Habitación amplia con vista al mar",
@@ -85,7 +85,7 @@
   },
 
   {
-    "id": 1,
+    "id": 6,
     "tipo": "Junior Suite",
     "cantidadDisponibles": 40,
     "descripcion": "Habitación amplia con vista al mar",
@@ -102,7 +102,7 @@
   },
 
   {
-    "id": 2,
+    "id": 7,
     "tipo": "Suite Familiar",
     "cantidadDisponibles": 20,
     "descripcion": "Ideal para familias",
@@ -118,7 +118,7 @@
   },
 
   {
-    "id": 1,
+    "id": 8,
     "tipo": "Suite Presidencial",
     "cantidadDisponibles": 20,
     "descripcion": "Habitación amplia con vista al mar",
@@ -135,8 +135,8 @@
   },
 
   {
-    "id": 1,
-    "tipo": "Estandar King",
+    "id": 9,
+    "tipo": "Habitacion Accesible",
     "cantidadDisponibles": 20,
     "descripcion": "Habitación amplia con vista al mar",
     "ubicacion": "Torre Norte",
