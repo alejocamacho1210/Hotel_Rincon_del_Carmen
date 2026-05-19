@@ -1,10 +1,7 @@
 import {
-    leerDisponibilidad
-} from "./disponibilidad.js";
-
-import {
-    leerReservaciones
-} from "./reservaciones.js";
+    inicializarHabitaciones,
+    obtenerHabitaciones
+} from "./habitaciones.js";
 
 
 const defaultState =
@@ -28,48 +25,11 @@ let hoy,
     fechaCheckOut;
 
 
-
-// ==========================
-// IMAGENES
-// ==========================
-
-const imagenesHabitaciones = {
-
-    "Estandar King":
-    "../images/estandar_king.jpeg",
-
-    "Estandar Double":
-    "../images/estandar_double.jpeg",
-
-    "Ejecutiva King":
-    "../images/ejecutiva_king.jpeg",
-
-    "Habitacion premium":
-    "../images/habitacion_premium.jpeg",
-
-    "Apart Hotel":
-    "../images/apart_hotel.jpeg",
-
-    "Junior Suite":
-    "../images/suite_junior.jpeg",
-
-    "Suite Familiar":
-    "../images/suite_familiar.jpeg",
-
-    "Suite Presidencial":
-    "../images/suite_presidencial.jpeg",
-
-    "Habitacion Accesible":
-    "../images/habitacion_accesible.jpeg"
-
-};
+// INICIALIZAR HABITACIONES
+await inicializarHabitaciones();
 
 
-
-// ==========================
-// CHECK IN
-// ==========================
-
+// EVENTO CHECK IN
 checkInInput.addEventListener("change", () => {
 
     hoy = new Date();
@@ -77,61 +37,37 @@ checkInInput.addEventListener("change", () => {
     fechaCheckIn =
         new Date(checkInInput.value);
 
+    diasAPagar();
+
     compararHoyConCheckIn();
 
     compararCheckInConCheckOut();
 
-    verificarFiltros();
-
 });
 
 
-
-// ==========================
-// CHECK OUT
-// ==========================
-
+// EVENTO CHECK OUT
 checkOutInput.addEventListener("change", () => {
 
     fechaCheckOut =
         new Date(checkOutInput.value);
 
-    compararCheckInConCheckOut();
+    diasAPagar();
 
-    verificarFiltros();
+    compararCheckInConCheckOut();
 
 });
 
 
-
-// ==========================
-// PERSONAS
-// ==========================
-
-cantPersonas.addEventListener(
-    "input",
-    verificarFiltros
-);
-
-
-
-// ==========================
-// VALIDACIONES
-// ==========================
-
+// VALIDAR CHECK IN
 function compararHoyConCheckIn() {
 
     if (!fechaCheckIn) return;
 
-    const hoySinHora =
-        new Date();
-
-    hoySinHora.setHours(0, 0, 0, 0);
-
-    if (fechaCheckIn < hoySinHora) {
+    if (fechaCheckIn < hoy) {
 
         alert(
-            "La fecha de check in no puede ser anterior a hoy"
+            "La fecha de entrada no puede ser anterior a hoy"
         );
 
         checkInInput.value = "";
@@ -141,16 +77,12 @@ function compararHoyConCheckIn() {
 }
 
 
+// VALIDAR CHECK OUT
 function compararCheckInConCheckOut() {
 
-    if (
-        !fechaCheckIn ||
-        !fechaCheckOut
-    ) return;
+    if (!fechaCheckIn || !fechaCheckOut) return;
 
-    if (
-        fechaCheckIn >= fechaCheckOut
-    ) {
+    if (fechaCheckIn >= fechaCheckOut) {
 
         alert(
             "La fecha de salida debe ser posterior al check in"
@@ -163,35 +95,25 @@ function compararCheckInConCheckOut() {
 }
 
 
-
-// ==========================
-// DIAS A PAGAR
-// ==========================
-
+// CALCULAR DIAS
 function diasAPagar() {
 
-    if (
-        !fechaCheckIn ||
-        !fechaCheckOut
-    ) return 0;
+    if (!fechaCheckIn || !fechaCheckOut) return 0;
 
     const milisegundosPorDia =
         1000 * 60 * 60 * 24;
 
-    return (
+    const numeroDeDias =
         (fechaCheckOut - fechaCheckIn)
-        / milisegundosPorDia
-    );
+        / milisegundosPorDia;
+
+    return numeroDeDias;
 
 }
 
 
-
-// ==========================
-// FILTROS
-// ==========================
-
-async function verificarFiltros() {
+// VERIFICAR FILTROS
+function verificarFiltros() {
 
     const checkIn =
         checkInInput.value;
@@ -203,45 +125,48 @@ async function verificarFiltros() {
         Number(cantPersonas.value);
 
 
-    if (
-        !checkIn ||
-        !checkOut ||
-        !personas
-    ) {
+    // SI TODOS LOS FILTROS ESTAN LLENOS
+    if (checkIn && checkOut && personas) {
 
-        defaultState.style.display =
-            "flex";
+        defaultState.style.display = "none";
 
-        roomsSection.innerHTML = "";
-
-        return;
+        mostrarHabitaciones(personas);
 
     }
 
+    // SI FALTA ALGUNO
+    else {
 
-    defaultState.style.display =
-        "none";
+        defaultState.style.display = "flex";
 
+        roomsSection.innerHTML = "";
+
+    }
+
+}
+
+
+// MOSTRAR HABITACIONES
+function mostrarHabitaciones(personas) {
 
     const habitaciones =
-        await leerDisponibilidad();
+        obtenerHabitaciones();
 
-    const reservaciones =
-        leerReservaciones();
+    const reservas =
+        JSON.parse(
+            localStorage.getItem("reservaciones")
+        ) || [];
 
 
+    // FILTRAR CANDIDATAS
     const habitacionesDisponibles =
         habitaciones.filter(habitacion => {
 
             const capacidadMinima =
-                Number(
-                    habitacion["capacidad minima"]
-                );
+                Number(habitacion["capacidad minima"]);
 
             const capacidadMaxima =
-                Number(
-                    habitacion["capacidad maxima"]
-                );
+                Number(habitacion["capacidad maxima"]);
 
 
             const cumpleCapacidad =
@@ -249,47 +174,36 @@ async function verificarFiltros() {
                 personas <= capacidadMaxima;
 
 
-            if (!cumpleCapacidad) {
-
-                return false;
-
-            }
-
-
-            const reservasDeEsteTipo =
-                reservaciones.filter(
-                    reserva =>
-                        reserva.tipoHabitacion ===
-                        habitacion.tipo
+            const reservasDeEseTipo =
+                reservas.filter(reserva =>
+                    reserva.tipoHabitacion ===
+                    habitacion.tipo
                 ).length;
 
 
-            const disponibilidadReal =
+            const disponiblesReales =
                 habitacion.cantidadDisponibles -
-                reservasDeEsteTipo;
+                reservasDeEseTipo;
 
 
-            return disponibilidadReal > 0;
+            return (
+                cumpleCapacidad &&
+                disponiblesReales > 0
+            );
 
         });
 
 
-    if (
-        habitacionesDisponibles.length === 0
-    ) {
+    // SI NO HAY DISPONIBLES
+    if (habitacionesDisponibles.length === 0) {
 
         roomsSection.innerHTML = `
 
-        <article class="empty-room-card">
+        <article class="room-card">
 
             <h2>
-                No encontramos habitaciones disponibles
+                No hay habitaciones disponibles
             </h2>
-
-            <p>
-                Intenta cambiar las fechas
-                o la cantidad de personas.
-            </p>
 
         </article>
 
@@ -300,114 +214,44 @@ async function verificarFiltros() {
     }
 
 
+    // PINTAR TARJETAS
     roomsSection.innerHTML = "";
 
 
-    habitacionesDisponibles.forEach(
-        habitacion => {
+    habitacionesDisponibles.forEach(habitacion => {
 
-            const reservasDeEsteTipo =
-                reservaciones.filter(
-                    reserva =>
-                        reserva.tipoHabitacion ===
-                        habitacion.tipo
-                ).length;
+        roomsSection.innerHTML += `
 
+        <article class="room-card">
 
-            const disponibilidadReal =
-                habitacion.cantidadDisponibles -
-                reservasDeEsteTipo;
+            <h2>${habitacion.tipo}</h2>
 
+            <p>${habitacion.descripcion}</p>
 
-            const imagen =
-                imagenesHabitaciones[
-                    habitacion.tipo
-                ];
+            <strong>
+                $${habitacion.precio}
+            </strong>
 
+        </article>
 
-            roomsSection.innerHTML += `
+        `;
 
-            <article class="hotel-room-card">
-
-                <img
-                    src="${imagen}"
-                    class="hotel-room-image"
-                >
-
-                <div class="hotel-room-content">
-
-                    <div class="hotel-room-top">
-
-                        <h2>
-                            ${habitacion.tipo}
-                        </h2>
-
-                        <span class="room-location">
-                            📍 ${habitacion.ubicacion}
-                        </span>
-
-                    </div>
-
-
-                    <p class="hotel-room-description">
-                        ${habitacion.descripcion}
-                    </p>
-
-
-                    <div class="hotel-room-info">
-
-                        <span>
-                            👥
-                            ${habitacion["capacidad minima"]}
-                            -
-                            ${habitacion["capacidad maxima"]}
-                            personas
-                        </span>
-
-                        <span>
-                            🛏️
-                            ${disponibilidadReal}
-                            disponibles
-                        </span>
-
-                    </div>
-
-
-                    <div class="hotel-room-services">
-
-                        ${habitacion.servicios
-                            .map(
-                                servicio =>
-                                `<span>${servicio}</span>`
-                            )
-                            .join("")}
-
-                    </div>
-
-
-                    <div class="hotel-room-footer">
-
-                        <strong>
-                            $
-                            ${habitacion.precio.toLocaleString()}
-                            / noche
-                        </strong>
-
-                        <button
-                            class="hotel-room-btn"
-                            onclick="location.href='registro.html'"
-                        >
-                            Reservar
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </article>
-
-            `;
-
-        });
+    });
 
 }
+
+
+checkInInput.addEventListener(
+    "input",
+    verificarFiltros
+);
+
+checkOutInput.addEventListener(
+    "input",
+    verificarFiltros
+);
+
+cantPersonas.addEventListener(
+    "input",
+    verificarFiltros
+);

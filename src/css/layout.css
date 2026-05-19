@@ -387,3 +387,15 @@
 .payment-info{
     padding:2rem;
 }
+
+/* ===== REGISTRO ===== */
+
+.register-form{
+    display:flex;
+    flex-direction:column;
+    gap:1.3rem;
+}
+
+.register-form input{
+    margin-bottom:.2rem;
+}

@@ -1,283 +1,422 @@
-const registerBtn = document.querySelectorAll(".nav-btn")[0]
-const loginBtn = document.querySelectorAll(".nav-btn")[1]
-const registerModal = document.querySelector(".register-modal")
-const loginModal = document.querySelector(".login-modal")
-const registerForm = document.querySelector(".register-modal form")
-const loginForm = document.querySelector(".login-modal form")
-const contactForm = document.querySelector(".contact-form")
-const topNav = document.querySelector(".top-nav")
+const registerBtn =
+    document.querySelectorAll(".nav-btn")[0];
 
-let currentUser = null
+const loginBtn =
+    document.querySelectorAll(".nav-btn")[1];
 
-registerBtn.onclick = () =>{
-    registerModal.style.display = "flex"
-}
+const registerModal =
+    document.querySelector(".register-modal");
 
-loginBtn.onclick = () =>{
-    loginModal.style.display = "flex"
-}
+const loginModal =
+    document.querySelector(".login-modal");
 
-window.onclick = (e) =>{
-    if(e.target === registerModal){
-        registerModal.style.display = "none"
+const registerForm =
+    document.querySelector(".register-modal form");
+
+const loginForm =
+    document.querySelector(".login-modal form");
+
+const contactForm =
+    document.querySelector(".contact-form");
+
+const topNav =
+    document.querySelector(".top-nav");
+
+
+let currentUser = null;
+
+
+// ABRIR MODAL REGISTRO
+registerBtn.onclick = () => {
+
+    registerModal.style.display = "flex";
+
+};
+
+
+// ABRIR MODAL LOGIN
+loginBtn.onclick = () => {
+
+    loginModal.style.display = "flex";
+
+};
+
+
+// CERRAR MODALES
+window.onclick = (e) => {
+
+    if (e.target === registerModal) {
+
+        registerModal.style.display = "none";
+
     }
-    if(e.target === loginModal){
-        loginModal.style.display = "none"
-    }
-    if(e.target === roomModal){
-        roomModal.style.display = "none"
-        document.body.style.overflow = ""
-    }
-}
 
-registerForm.onsubmit = (e) =>{
-    e.preventDefault()
-    const inputs = registerForm.querySelectorAll("input")
+    if (e.target === loginModal) {
+
+        loginModal.style.display = "none";
+
+    }
+
+    if (e.target === roomModal) {
+
+        roomModal.style.display = "none";
+
+        document.body.style.overflow = "";
+
+    }
+
+};
+
+
+// REGISTRAR USUARIO
+registerForm.onsubmit = (e) => {
+
+    e.preventDefault();
+
+
+    const inputs =
+        registerForm.querySelectorAll("input");
+
+
+    // LEER USUARIOS
+    const usuarios =
+        JSON.parse(
+            localStorage.getItem("usuarios")
+        ) || [];
+
+
+    // VALIDAR DOCUMENTO
+    const documentoExiste =
+        usuarios.some(
+            usuario =>
+                usuario.identification ===
+                inputs[0].value
+        );
+
+
+    if (documentoExiste) {
+
+        alert(
+            "Ya existe un usuario con ese documento"
+        );
+
+        return;
+
+    }
+
+
+    // VALIDAR CORREO
+    const correoExiste =
+        usuarios.some(
+            usuario =>
+                usuario.email ===
+                inputs[3].value
+        );
+
+
+    if (correoExiste) {
+
+        alert(
+            "Ya existe un usuario con ese correo"
+        );
+
+        return;
+
+    }
+
+
+    // CREAR USUARIO
     const user = {
-        id:inputs[0].value,
-        name:inputs[1].value,
-        country:inputs[2].value,
-        email:inputs[3].value,
-        phone:inputs[4].value,
-        password:inputs[5].value
-    }
-    localStorage.setItem("hotelUser",JSON.stringify(user))
-    alert("Cuenta creada correctamente")
-    registerModal.style.display = "none"
-}
 
-loginForm.onsubmit = (e) =>{
-    e.preventDefault()
-    const inputs = loginForm.querySelectorAll("input")
-    const savedUser = JSON.parse(localStorage.getItem("hotelUser"))
-    if(
-        savedUser &&
-        inputs[0].value === savedUser.name &&
-        inputs[1].value === savedUser.id &&
-        inputs[2].value === savedUser.password
-    ){
-        currentUser = savedUser
-        sessionStorage.setItem("activeUser", JSON.stringify(savedUser))
+        id: usuarios.length + 1,
+
+        identification: inputs[0].value,
+
+        name: inputs[1].value,
+
+        country: inputs[2].value,
+
+        email: inputs[3].value,
+
+        phone: inputs[4].value,
+
+        password: inputs[5].value,
+
+        role: "client"
+
+    };
+
+
+    // GUARDAR
+    usuarios.push(user);
+
+
+    localStorage.setItem(
+        "usuarios",
+        JSON.stringify(usuarios)
+    );
+
+
+    alert(
+        "Cuenta creada correctamente"
+    );
+
+
+    registerModal.style.display =
+        "none";
+
+};
+
+
+// LOGIN
+loginForm.onsubmit = (e) => {
+
+    e.preventDefault();
+
+
+    const inputs =
+        loginForm.querySelectorAll("input");
+
+
+    // LEER USUARIOS
+    const usuarios =
+        JSON.parse(
+            localStorage.getItem("usuarios")
+        ) || [];
+
+
+    // BUSCAR USUARIO
+    const usuarioEncontrado =
+        usuarios.find(
+            usuario =>
+
+                inputs[0].value ===
+                usuario.name &&
+
+                inputs[1].value ===
+                usuario.identification &&
+
+                inputs[2].value ===
+                usuario.password
+        );
+
+
+    // SI EXISTE
+    if (usuarioEncontrado) {
+
+        currentUser =
+            usuarioEncontrado;
+
+
+        // GUARDAR SESION
+        sessionStorage.setItem(
+            "activeUser",
+            JSON.stringify(usuarioEncontrado)
+        );
+
+
+        // SI ES ADMIN
+        if (
+            usuarioEncontrado.role ===
+            "admin"
+        ) {
+
+            alert(
+                "Bienvenido administrador"
+            );
+
+
+            window.location.href =
+                "admin.html";
+
+            return;
+
+        }
+
+
+        // CLIENTE NORMAL
         topNav.innerHTML = `
-            <button class="user-btn">${savedUser.name}</button>
-            <button class="reserve-btn" onclick="location.href='pag-02.html'">Reservar</button>
-            <div class="dropdown">
-                <button class="logout-btn">Cerrar sesión</button>
-            </div>
-        `
-        const userBtn = document.querySelector(".user-btn")
-        const dropdown = document.querySelector(".dropdown")
-        dropdown.style.display = "none"
-        userBtn.onclick = () =>{
-            dropdown.style.display =
-            dropdown.style.display === "flex" ? "none" : "flex"
-        }
-        document.querySelector(".logout-btn").onclick = () =>{
-            sessionStorage.removeItem("activeUser")
-            location.reload()
-        }
-        loginModal.style.display = "none"
-        alert("Sesión iniciada correctamente")
-    }else{
-        alert("Datos incorrectos")
-    }
-}
 
-contactForm.onsubmit = (e) =>{
-    e.preventDefault()
-    const inputs = contactForm.querySelectorAll("input")
-    const filled = [...inputs].every(input => input.value.trim() !== "")
-    if(!filled){
-        alert("Ingresa tus datos")
-        return
-    }
-    alert("Tus datos se enviaron correctamente")
-    contactForm.reset()
-}
-
-const activeUser = JSON.parse(sessionStorage.getItem("activeUser"))
-
-if(activeUser){
-    topNav.innerHTML = `
-        <button class="user-btn">${activeUser.name}</button>
-        <button class="reserve-btn" onclick="location.href='pag-02.html'">Reservar</button>
-        <div class="dropdown">
-            <button class="logout-btn">Cerrar sesión</button>
-        </div>
-    `
-    const userBtn = document.querySelector(".user-btn")
-    const dropdown = document.querySelector(".dropdown")
-    dropdown.style.display = "none"
-    userBtn.onclick = () =>{
-        dropdown.style.display =
-        dropdown.style.display === "flex" ? "none" : "flex"
-    }
-    document.querySelector(".logout-btn").onclick = () =>{
-        sessionStorage.removeItem("activeUser")
-        location.reload()
-    }
-}
-
-const rooms = [
-    {
-        name:"Estandar King",
-        image:"../images/estandar_king.jpeg",
-        description:"Habitación elegante con cama king y ambiente moderno.",
-        features:["📶 Wifi","📺 Smart TV","❄️ Aire acondicionado","☕ Cafetera"]
-    },
-    {
-        name:"Estandar Double",
-        image:"../images/estandar_double.jpeg",
-        description:"Perfecta para amigos o parejas con dos camas cómodas.",
-        features:["📶 Wifi","📺 Smart TV","🛏️ Dos camas","❄️ Aire acondicionado"]
-    },
-    {
-        name:"Ejecutiva King",
-        image:"../images/ejecutiva_king.jpeg",
-        description:"Ideal para viajes ejecutivos con zona de trabajo.",
-        features:["📶 Wifi","📺 Smart TV","💻 Escritorio","🍷 Mini bar"]
-    },
-    {
-        name:"Habitacion premium",
-        image:"../images/habitacion_premium.jpeg",
-        description:"Mayor comodidad y acabados premium.",
-        features:["📶 Wifi","📺 Smart TV","🍷 Mini bar","🛋️ Sala privada"]
-    },
-    {
-        name:"Apart hotel",
-        image:"../images/apart_hotel.jpeg",
-        description:"Espacio tipo apartamento para largas estadías.",
-        features:["📶 Wifi","📺 Smart TV","🍳 Cocina","🧺 Lavadora"]
-    },
-    {
-        name:"Junior suite",
-        image:"../images/suite_junior.jpeg",
-        description:"Suite moderna con ambiente exclusivo.",
-        features:["📶 Wifi","📺 Smart TV","🍷 Mini bar","🛁 Jacuzzi"]
-    },
-    {
-        name:"Suite familiar",
-        image:"../images/suite_familiar.jpeg",
-        description:"Espacio amplio ideal para familias.",
-        features:["📶 Wifi","📺 Smart TV","🛏️ Camas múltiples","🍽️ Comedor"]
-    },
-    {
-        name:"Suite presidencial",
-        image:"../images/suite_presidencial.jpeg",
-        description:"La habitación más lujosa del hotel.",
-        features:["📶 Wifi","📺 Smart TV","🛁 Jacuzzi","🍾 Mini bar premium","👑 Servicio VIP"]
-    },
-    {
-        name:"Habitaciones accesibles",
-        image:"../images/habitacion_accesible.jpeg",
-        description:"Diseñada para mayor comodidad y accesibilidad.",
-        features:["📶 Wifi","📺 Smart TV","♿ Accesibilidad","🚿 Baño adaptado"]
-    }
-]
-
-const gallery = document.querySelector(".gallery-grid")
-
-if(gallery){
-    rooms.forEach((room,index)=>{
-        gallery.innerHTML += `
-        <article class="gallery-card">
-            <img src="${room.image}">
-            <div class="gallery-info">
-                <h3>${room.name}</h3>
-            </div>
-        </article>
-        `
-    })
-}
-
-const roomModal = document.querySelector(".room-modal")
-const roomPreview = document.querySelector(".room-preview")
-const roomTitle = document.querySelector(".room-title")
-const roomDescription = document.querySelector(".room-description")
-
-document.querySelectorAll(".gallery-card")
-.forEach((card,index)=>{
-    card.onclick = () =>{
-        roomModal.style.display = "flex"
-        roomModal.scrollTop = 0
-        document.body.style.overflow = "hidden"
-        roomPreview.src = rooms[index].image
-        roomTitle.textContent = rooms[index].name
-        roomDescription.innerHTML = `
-            <p>${rooms[index].description}</p>
-            <div class="features-list">
-                ${rooms[index].features.map(feature=>`<span>${feature}</span>`).join("")}
-            </div>
-            <button class="reserve-btn" onclick="location.href='pag-02.html'" style="margin-top:1.5rem;width:100%;">
-                Reservar esta habitación
+            <button class="user-btn">
+                ${usuarioEncontrado.name}
             </button>
-        `
-    }
-})
 
-document.querySelector(".back-room").onclick = () =>{
-    roomModal.style.display = "none"
-    document.body.style.overflow = ""
-}
+            <button 
+                class="reserve-btn"
+                onclick="location.href='pag-02.html'"
+            >
+                Reservar
+            </button>
 
-document.querySelector(".room-modal").addEventListener("wheel", (e) =>{
-    e.stopPropagation()
-}, { passive: true })
+            <div class="dropdown">
 
-const areas = [
-    {
-        name: "Piscina",
-        image: "../images/piscina.jpeg",
-        description: "Relájate en nuestra piscina con vista panorámica al mar.",
-        features: ["🏊 Acceso libre","🌅 Vista al mar","🌿 Zona de descanso","🍹 Bar en piscina"]
-    },
-    {
-        name: "Jacuzzi",
-        image: "../images/jacuzzi.jpeg",
-        description: "Disfruta de una experiencia de relajación total en nuestro jacuzzi privado.",
-        features: ["♨️ Agua caliente","💆 Zona de spa","🕯️ Ambiente relajante","🛁 Privado"]
-    },
-    {
-        name: "Cocina",
-        image: "../images/cocina.jpeg",
-        description: "Gastronomía de alta calidad preparada por nuestros chefs expertos.",
-        features: ["👨‍🍳 Chef profesional","🍽️ Menú variado","🍱 Bufet"]
-    },
-    {
-        name: "Comedor",
-        image: "../images/comedores.jpeg",
-        description: "Espacios elegantes para disfrutar de una experiencia gastronómica única.",
-        features: ["🍽️ Servicio completo","🕯️ Ambiente elegante","👨‍👩‍👧 Familiar","🎵 Música en vivo"]
-    },
-    {
-        name: "Sala de juegos",
-        image: "../images/sala_de_juegos.jpeg",
-        description: "Diversión garantizada para toda la familia en nuestra sala de entretenimiento.",
-        features: ["🎮 Videojuegos","🎱 Billar","🎲 Juegos de mesa"]
-    },
-    {
-        name: "Canchas deportivas",
-        image: "../images/canchas.jpeg",
-        description: "Disfruta de nuestras canchas deportivas para actividades al aire libre.",
-        features: ["⚽ Fútbol", "🏀 Baloncesto", "🎾 Tenis"]
-    }
-]
+                <button class="logout-btn">
+                    Cerrar sesión
+                </button>
 
-const areasGrid = document.querySelector(".areas-grid")
-
-if(areasGrid){
-    areas.forEach(area =>{
-        areasGrid.innerHTML += `
-        <article class="area-card">
-            <img src="${area.image}" alt="${area.name}">
-            <div class="area-info">
-                <h3>${area.name}</h3>
-                <p>${area.description}</p>
-                <div class="features-list">
-                    ${area.features.map(f => `<span>${f}</span>`).join("")}
-                </div>
             </div>
-        </article>
-        `
-    })
+
+        `;
+
+
+        const userBtn =
+            document.querySelector(".user-btn");
+
+        const dropdown =
+            document.querySelector(".dropdown");
+
+
+        dropdown.style.display = "none";
+
+
+        userBtn.onclick = () => {
+
+            dropdown.style.display =
+
+            dropdown.style.display === "flex"
+            ? "none"
+            : "flex";
+
+        };
+
+
+        document.querySelector(".logout-btn")
+        .onclick = () => {
+
+            sessionStorage.removeItem(
+                "activeUser"
+            );
+
+            location.reload();
+
+        };
+
+
+        loginModal.style.display =
+            "none";
+
+
+        alert(
+            "Sesión iniciada correctamente"
+        );
+
+    }
+
+    else {
+
+        alert(
+            "Datos incorrectos"
+        );
+
+    }
+
+};
+
+
+// FORMULARIO CONTACTO
+contactForm.onsubmit = (e) => {
+
+    e.preventDefault();
+
+
+    const inputs =
+        contactForm.querySelectorAll("input");
+
+
+    const filled =
+        [...inputs].every(
+            input =>
+                input.value.trim() !== ""
+        );
+
+
+    if (!filled) {
+
+        alert(
+            "Ingresa tus datos"
+        );
+
+        return;
+
+    }
+
+
+    alert(
+        "Tus datos se enviaron correctamente"
+    );
+
+
+    contactForm.reset();
+
+};
+
+
+// USUARIO ACTIVO
+const activeUser =
+    JSON.parse(
+        sessionStorage.getItem("activeUser")
+    );
+
+
+if (
+    activeUser &&
+    activeUser.role !== "admin"
+) {
+
+    topNav.innerHTML = `
+
+        <button class="user-btn">
+            ${activeUser.name}
+        </button>
+
+        <button 
+            class="reserve-btn"
+            onclick="location.href='pag-02.html'"
+        >
+            Reservar
+        </button>
+
+        <div class="dropdown">
+
+            <button class="logout-btn">
+                Cerrar sesión
+            </button>
+
+        </div>
+
+    `;
+
+
+    const userBtn =
+        document.querySelector(".user-btn");
+
+    const dropdown =
+        document.querySelector(".dropdown");
+
+
+    dropdown.style.display = "none";
+
+
+    userBtn.onclick = () => {
+
+        dropdown.style.display =
+
+        dropdown.style.display === "flex"
+        ? "none"
+        : "flex";
+
+    };
+
+
+    document.querySelector(".logout-btn")
+    .onclick = () => {
+
+        sessionStorage.removeItem(
+            "activeUser"
+        );
+
+        location.reload();
+
+    };
+
 }
