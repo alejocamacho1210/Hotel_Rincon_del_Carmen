@@ -1,123 +1,274 @@
-import {
-    leerReservaActual
-} from "./reservaActual.js";
+//pago.js
 
-import {
-    guardarReserva
-} from "./reservaciones.js";
-
-
-const usuarioActivo = JSON.parse(
+const activeUser = JSON.parse(
     sessionStorage.getItem("activeUser")
-);
+)
 
-
-const reservaActual = leerReservaActual();
-
-const paymentUser =
-    document.getElementById("payment-user");
-
-const paymentContent =
-    document.getElementById("payment-content");
-
-
-if (!usuarioActivo || !reservaActual) {
-
-    window.location.href = "pag-01.html";
-
+if(!activeUser){
+    alert("Debes iniciar sesión")
+    location.href = "pag-01.html"
 }
 
+const reservaPendiente = JSON.parse(
+    sessionStorage.getItem("reservaPendiente")
+)
+
+if(!reservaPendiente){
+    alert("No hay información de reserva")
+    location.href = "pag-02.html"
+}
+
+const habitaciones = JSON.parse(
+    localStorage.getItem("hotelRooms")
+) || []
+
+const reservas = JSON.parse(
+    localStorage.getItem("reservas")
+) || []
+
+const paymentUser = document.getElementById("payment-user")
+const paymentContent = document.getElementById("payment-content")
 
 paymentUser.innerHTML = `
+    <div class="payment-user-box">
 
-<div class="payment-user-box">
+        <span class="payment-user-icon">
+            👤
+        </span>
 
-    <span>👤</span>
+        <div>
+            <strong>${activeUser.name}</strong>
+            <p>${activeUser.email}</p>
+        </div>
 
-    <div>
-        <strong>${usuarioActivo.nombre}</strong>
-        <p>${usuarioActivo.correo}</p>
     </div>
+`
 
-</div>
+const habitacion = habitaciones.find(
+    room => room.id === reservaPendiente.roomId
+)
 
-`;
+if(!habitacion){
+    alert("Habitación no encontrada")
+    location.href = "pag-02.html"
+}
+
+const imagenes = {
+    "Estandar King":"../images/estandar_king.jpeg",
+    "Estandar Double":"../images/estandar_double.jpeg",
+    "Ejecutiva King":"../images/ejecutiva_king.jpeg",
+    "Habitacion premium":"../images/habitacion_premium.jpeg",
+    "Apart Hotel":"../images/apart_hotel.jpeg",
+    "Junior Suite":"../images/suite_junior.jpeg",
+    "Suite Familiar":"../images/suite_familiar.jpeg",
+    "Suite Presidencial":"../images/suite_presidencial.jpeg",
+    "Habitacion Accesible":"../images/habitacion_accesible.jpeg"
+}
 
 paymentContent.innerHTML = `
+    <article class="payment-card">
 
-        <div class="payment-details">
+        <img 
+            src="${imagenes[habitacion.tipo]}"
+            class="payment-room-image"
+        >
 
-            <span>
-                📅 Check in:
-                ${reservaActual.checkIn}
-            </span>
+        <div class="payment-room-content">
 
-            <span>
-                📅 Check out:
-                ${reservaActual.checkOut}
-            </span>
+            <div class="payment-room-header">
 
-            <span>
-                🌙 Noches:
-                ${reservaActual.noches}
-            </span>
+                <div>
 
-            <span>
-                👥 Personas:
-                ${reservaActual.personas}
-            </span>
+                    <span class="payment-room-tag">
+                        ${habitacion.ubicacion}
+                    </span>
+
+                    <h2>
+                        ${habitacion.tipo}
+                    </h2>
+
+                </div>
+
+                <strong class="payment-price">
+                    $${habitacion.precio.toLocaleString()}
+                </strong>
+
+            </div>
+
+            <p class="payment-description">
+                ${habitacion.descripcion}
+            </p>
+
+            <div class="payment-services">
+
+                ${habitacion.servicios
+                    .map(service => `
+                        <span>${service}</span>
+                    `)
+                    .join("")
+                }
+
+            </div>
+
+            <div class="payment-details">
+
+                <div class="payment-detail">
+
+                    <span>Check In</span>
+
+                    <strong>
+                        ${reservaPendiente.checkIn}
+                    </strong>
+
+                </div>
+
+                <div class="payment-detail">
+
+                    <span>Check Out</span>
+
+                    <strong>
+                        ${reservaPendiente.checkOut}
+                    </strong>
+
+                </div>
+
+                <div class="payment-detail">
+
+                    <span>Noches</span>
+
+                    <strong>
+                        ${reservaPendiente.noches}
+                    </strong>
+
+                </div>
+
+                <div class="payment-detail">
+
+                    <span>Personas</span>
+
+                    <strong>
+                        ${reservaPendiente.personas}
+                    </strong>
+
+                </div>
+
+            </div>
+
+            <div class="payment-total">
+
+                <span>Total a pagar</span>
+
+                <strong>
+                    $${reservaPendiente.total.toLocaleString()}
+                </strong>
+
+            </div>
+
+            <button 
+                class="confirm-payment-btn"
+                id="confirmPaymentBtn"
+            >
+                Reservar habitación
+            </button>
 
         </div>
 
+    </article>
+`
 
-        <div class="payment-total">
+const confirmPaymentBtn = document.getElementById(
+    "confirmPaymentBtn"
+)
 
-            Total a pagar:
+confirmPaymentBtn.onclick = () => {
 
-            <strong>
-                $${reservaActual.total.toLocaleString()}
-            </strong>
+    const reservasActuales = JSON.parse(
+        localStorage.getItem("reservas")
+    ) || []
 
-        </div>
+    const habitacionesActuales = JSON.parse(
+        localStorage.getItem("hotelRooms")
+    ) || []
 
+    const roomActual = habitacionesActuales.find(
+        room => room.id === reservaPendiente.roomId
+    )
 
-        <button class="confirm-payment-btn" id="confirm-payment-btn">
-            Pagar ahora
-        </button>
+    if(!roomActual){
+        alert("La habitación ya no existe")
+        return
+    }
 
-    </div>
+    const reservasDeEstaHabitacion =
+    reservasActuales.filter(
+        reserva =>
+        reserva.roomId === roomActual.id
+    ).length
 
-</article>
+    const disponibles =
+    roomActual.cantidadDisponibles -
+    reservasDeEstaHabitacion
 
-`;
+    if(disponibles <= 0){
 
+        alert(
+            "Lo sentimos, esta habitación ya no se encuentra disponible"
+        )
 
-const confirmPaymentBtn =
-    document.getElementById("confirm-payment-btn");
+        location.href = "pag-02.html"
 
+        return
+    }
 
-confirmPaymentBtn.addEventListener("click", () => {
+    const nuevaReserva = {
 
-    const nuevaReservacion = {
+        reservationId: Date.now(),
 
-        usuario: usuarioActivo,
+        userId: activeUser.id,
 
-        reserva: reservaActual,
+        userName: activeUser.name,
 
-        fechaReserva:
-            new Date().toLocaleDateString()
+        userEmail: activeUser.email,
 
-    };
+        userPhone: activeUser.phone,
 
+        roomId: roomActual.id,
 
-    guardarReserva(nuevaReservacion);
+        roomType: roomActual.tipo,
 
+        roomPrice: roomActual.precio,
 
-    alert(
-        "Reserva realizada correctamente"
-    );
+        roomLocation: roomActual.ubicacion,
 
+        roomDescription: roomActual.descripcion,
 
-    window.location.href = "pag-01.html";
+        roomServices: roomActual.servicios,
 
-});
+        checkIn: reservaPendiente.checkIn,
+
+        checkOut: reservaPendiente.checkOut,
+
+        noches: reservaPendiente.noches,
+
+        personas: reservaPendiente.personas,
+
+        total: reservaPendiente.total,
+
+        createdAt: new Date().toISOString()
+    }
+
+    reservasActuales.push(nuevaReserva)
+
+    localStorage.setItem(
+        "reservas",
+        JSON.stringify(reservasActuales)
+    )
+
+    sessionStorage.removeItem(
+        "reservaPendiente"
+    )
+
+    alert("Reserva realizada correctamente")
+
+    location.href = "pag-01.html"
+}

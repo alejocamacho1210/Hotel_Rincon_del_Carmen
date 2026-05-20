@@ -18,7 +18,64 @@
 
 <body>
 
-    <reservation-page></reservation-page>
+    <main class="reservation-page">
+
+    <section class="reservation-hero">
+
+        <h1>
+            Reserva tu habitación ideal
+        </h1>
+
+        <p>
+            Descubre espacios cómodos y modernos para disfrutar tu estadía.
+        </p>
+
+    </section>
+
+
+    <section class="filters-section">
+
+        <div class="filter-box">
+
+            <label>Entrada</label>
+
+            <input type="date" id="checkIn">
+
+        </div>
+
+
+        <div class="filter-box">
+
+            <label>Salida</label>
+
+            <input type="date" id="checkOut">
+
+        </div>
+
+
+        <div class="filter-box">
+
+            <label>Personas</label>
+
+            <input 
+                type="number"
+                id="personas"
+                min="1"
+            >
+
+        </div>
+
+    </section>
+
+
+    <section
+        class="rooms-grid"
+        id="roomsContainer"
+    >
+
+    </section>
+
+</main>
 
     <script src="/src/js/initRooms.js"></script>
     <script src="../js/Webcomponent_pag-02.js"></script>

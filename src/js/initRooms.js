@@ -3,7 +3,7 @@
 async function inicializarHabitaciones() {
 
     const habitacionesGuardadas =
-        localStorage.getItem("hotelRooms");
+        localStorage.getItem("habitaciones");
 
     // SI YA EXISTEN
     if (habitacionesGuardadas) {
@@ -22,7 +22,7 @@ async function inicializarHabitaciones() {
             await respuesta.json();
 
         localStorage.setItem(
-            "hotelRooms",
+            "habitaciones",
             JSON.stringify(habitaciones)
         );
 

@@ -1,257 +1,455 @@
-import {
-    inicializarHabitaciones,
-    obtenerHabitaciones
-} from "./habitaciones.js";
+// leerInputs.js
+
+const contenedorHabitaciones =
+document.querySelector("#roomsContainer");
+
+const fechaCheckIn =
+document.querySelector("#checkIn");
+
+const fechaCheckOut =
+document.querySelector("#checkOut");
+
+const cantidadPersonas =
+document.querySelector("#personas");
 
 
-const defaultState =
-    document.getElementById("default-state");
-
-const roomsSection =
-    document.getElementById("rooms-section");
-
-const checkInInput =
-    document.getElementById("check-in");
-
-const checkOutInput =
-    document.getElementById("check-out");
-
-const cantPersonas =
-    document.getElementById("cantPersonas");
 
 
-let hoy,
-    fechaCheckIn,
-    fechaCheckOut;
+
+/* =========================
+   IMÁGENES
+========================= */
+
+const imagenesHabitaciones = {
+
+    "Estandar King":
+    "../images/estandar_king.jpeg",
+
+    "Estandar Double":
+    "../images/estandar_double.jpeg",
+
+    "Ejecutiva King":
+    "../images/ejecutiva_king.jpeg",
+
+    "Habitacion premium":
+    "../images/habitacion_premium.jpeg",
+
+    "Apart Hotel":
+    "../images/apart_hotel.jpeg",
+
+    "Junior Suite":
+    "../images/suite_junior.jpeg",
+
+    "Suite Familiar":
+    "../images/suite_familiar.jpeg",
+
+    "Suite Presidencial":
+    "../images/suite_presidencial.jpeg",
+
+    "Habitacion Accesible":
+    "../images/habitacion_accesible.jpeg"
+};
 
 
-// INICIALIZAR HABITACIONES
-await inicializarHabitaciones();
+
+/* =========================
+   VALIDACIONES FECHAS
+========================= */
+
+function validarCheckIn() {
+
+    if (!fechaCheckIn.value) return;
+
+    const hoy =
+    new Date().toISOString().split("T")[0];
 
 
-// EVENTO CHECK IN
-checkInInput.addEventListener("change", () => {
 
-    hoy = new Date();
-
-    fechaCheckIn =
-        new Date(checkInInput.value);
-
-    diasAPagar();
-
-    compararHoyConCheckIn();
-
-    compararCheckInConCheckOut();
-
-});
-
-
-// EVENTO CHECK OUT
-checkOutInput.addEventListener("change", () => {
-
-    fechaCheckOut =
-        new Date(checkOutInput.value);
-
-    diasAPagar();
-
-    compararCheckInConCheckOut();
-
-});
-
-
-// VALIDAR CHECK IN
-function compararHoyConCheckIn() {
-
-    if (!fechaCheckIn) return;
-
-    if (fechaCheckIn < hoy) {
-
-        alert(
-            "La fecha de entrada no puede ser anterior a hoy"
-        );
-
-        checkInInput.value = "";
-
-    }
-
-}
-
-
-// VALIDAR CHECK OUT
-function compararCheckInConCheckOut() {
-
-    if (!fechaCheckIn || !fechaCheckOut) return;
-
-    if (fechaCheckIn >= fechaCheckOut) {
+    if (fechaCheckIn.value <= hoy) {
 
         alert(
-            "La fecha de salida debe ser posterior al check in"
+            "La fecha de check in debe ser posterior al día de hoy"
         );
 
-        checkOutInput.value = "";
+        fechaCheckIn.value = "";
 
+        return;
     }
-
 }
 
 
-// CALCULAR DIAS
-function diasAPagar() {
 
-    if (!fechaCheckIn || !fechaCheckOut) return 0;
+function validarCheckOut() {
 
-    const milisegundosPorDia =
-        1000 * 60 * 60 * 24;
+    if (
+        !fechaCheckIn.value ||
+        !fechaCheckOut.value
+    ) return;
 
-    const numeroDeDias =
-        (fechaCheckOut - fechaCheckIn)
-        / milisegundosPorDia;
 
-    return numeroDeDias;
 
+    if (
+        fechaCheckOut.value <=
+        fechaCheckIn.value
+    ) {
+
+        alert(
+            "La fecha de salida no puede ser antes o igual al check in"
+        );
+
+        fechaCheckOut.value = "";
+    }
 }
 
 
-// VERIFICAR FILTROS
-function verificarFiltros() {
 
-    const checkIn =
-        checkInInput.value;
+/* =========================
+   DÍAS A PAGAR
+========================= */
 
-    const checkOut =
-        checkOutInput.value;
+export function diasAPagar(
+    checkIn,
+    checkOut
+) {
 
-    const personas =
-        Number(cantPersonas.value);
+    const entrada =
+    new Date(checkIn);
 
+    const salida =
+    new Date(checkOut);
 
-    // SI TODOS LOS FILTROS ESTAN LLENOS
-    if (checkIn && checkOut && personas) {
+    const diferencia =
+    salida - entrada;
 
-        defaultState.style.display = "none";
-
-        mostrarHabitaciones(personas);
-
-    }
-
-    // SI FALTA ALGUNO
-    else {
-
-        defaultState.style.display = "flex";
-
-        roomsSection.innerHTML = "";
-
-    }
-
+    return diferencia / (
+        1000 * 60 * 60 * 24
+    );
 }
 
 
-// MOSTRAR HABITACIONES
-function mostrarHabitaciones(personas) {
+
+/* =========================
+   DISPONIBILIDAD
+========================= */
+
+function habitacionesDisponibles() {
 
     const habitaciones =
-        obtenerHabitaciones();
+    JSON.parse(
+        localStorage.getItem("habitaciones")
+    )  || [];
+
+    const personas =
+    Number(cantidadPersonas.value);
+
+
+
+    if (
+        !fechaCheckIn.value ||
+        !fechaCheckOut.value ||
+        !cantidadPersonas.value
+    ) {
+
+        contenedorHabitaciones.innerHTML = "";
+
+        return;
+    }
+
+
 
     const reservas =
-        JSON.parse(
-            localStorage.getItem("reservaciones")
-        ) || [];
+    JSON.parse(
+        localStorage.getItem("reservas")
+    ) || [];
 
 
-    // FILTRAR CANDIDATAS
-    const habitacionesDisponibles =
-        habitaciones.filter(habitacion => {
 
-            const capacidadMinima =
-                Number(habitacion["capacidad minima"]);
+    const candidatas =
+    habitaciones.filter(habitacion => {
 
-            const capacidadMaxima =
-                Number(habitacion["capacidad maxima"]);
+        const min =
+        Number(
+            habitacion["capacidad minima"]
+        );
 
-
-            const cumpleCapacidad =
-                personas >= capacidadMinima &&
-                personas <= capacidadMaxima;
-
-
-            const reservasDeEseTipo =
-                reservas.filter(reserva =>
-                    reserva.tipoHabitacion ===
-                    habitacion.tipo
-                ).length;
+        const max =
+        Number(
+            habitacion["capacidad maxima"]
+        );
 
 
-            const disponiblesReales =
-                habitacion.cantidadDisponibles -
-                reservasDeEseTipo;
+
+        const cumpleCapacidad =
+        personas >= min &&
+        personas <= max;
 
 
-            return (
-                cumpleCapacidad &&
-                disponiblesReales > 0
-            );
 
-        });
+        const reservasHabitacion =
+        reservas.filter(reserva =>
+            reserva.habitacion.tipo ===
+            habitacion.tipo
+        ).length;
 
 
-    // SI NO HAY DISPONIBLES
-    if (habitacionesDisponibles.length === 0) {
 
-        roomsSection.innerHTML = `
+        const disponibles =
+        habitacion.cantidadDisponibles -
+        reservasHabitacion;
 
-        <article class="room-card">
 
-            <h2>
-                No hay habitaciones disponibles
-            </h2>
 
-        </article>
+        return (
+            cumpleCapacidad &&
+            disponibles > 0
+        );
+    });
+
+
+
+    renderizarHabitaciones(
+        candidatas
+    );
+}
+
+
+
+/* =========================
+   RENDER
+========================= */
+
+function renderizarHabitaciones(
+    habitacionesFiltradas
+) {
+
+    if (
+        habitacionesFiltradas.length === 0
+    ) {
+
+        contenedorHabitaciones.innerHTML = `
+
+            <div class="no-rooms">
+
+                <h2>
+                    No hay habitaciones disponibles
+                </h2>
+
+            </div>
 
         `;
 
         return;
-
     }
 
 
-    // PINTAR TARJETAS
-    roomsSection.innerHTML = "";
+
+    contenedorHabitaciones.innerHTML =
+    habitacionesFiltradas.map(habitacion => {
+
+        const imagen =
+        imagenesHabitaciones[
+            habitacion.tipo
+        ];
 
 
-    habitacionesDisponibles.forEach(habitacion => {
 
-        roomsSection.innerHTML += `
+        return `
 
         <article class="room-card">
 
-            <h2>${habitacion.tipo}</h2>
+            <img
+                class="room-image"
+                src="${imagen}"
+                alt="${habitacion.tipo}"
+            >
 
-            <p>${habitacion.descripcion}</p>
+            <div class="room-info">
 
-            <strong>
-                $${habitacion.precio}
-            </strong>
+                <h2>
+                    ${habitacion.tipo}
+                </h2>
+
+                <p>
+                    ${habitacion.descripcion}
+                </p>
+
+                <div class="room-services">
+
+                    ${habitacion.servicios.map(servicio => `
+
+                        <span>
+                            ${servicio}
+                        </span>
+
+                    `).join("")}
+
+                </div>
+
+                <div class="room-price">
+
+                    $${habitacion.precio.toLocaleString()}
+                    / noche
+
+                </div>
+
+                <button
+                    class="reserve-button"
+                    data-tipo="${habitacion.tipo}"
+                >
+                    Reservar
+                </button>
+
+            </div>
 
         </article>
 
         `;
 
-    });
+    }).join("");
 
+
+
+    activarBotonesReserva();
 }
 
 
-checkInInput.addEventListener(
-    "input",
-    verificarFiltros
+
+/* =========================
+   RESERVAR
+========================= */
+
+function activarBotonesReserva() {
+
+    const botones =
+    document.querySelectorAll(
+        ".reserve-button"
+    );
+
+
+
+    botones.forEach(boton => {
+
+        boton.addEventListener(
+            "click",
+            () => {
+
+                const habitaciones =
+                JSON.parse(
+                    localStorage.getItem("habitaciones")
+                ) || [];
+
+                const tipo =
+                boton.dataset.tipo;
+
+                const habitacion =
+                habitaciones.find(
+                    h => h.tipo === tipo
+                );
+
+
+
+                if (!habitacion) {
+
+                    alert(
+                        "No hay información de reserva"
+                    );
+
+                    return;
+                }
+
+
+
+                const reservaPendiente = {
+
+                    roomId: habitacion.id,
+
+                    checkIn:
+                    fechaCheckIn.value,
+
+                    checkOut:
+                    fechaCheckOut.value,
+
+                    personas:
+                    cantidadPersonas.value,
+
+                    noches:
+                    diasAPagar(
+                        fechaCheckIn.value,
+                        fechaCheckOut.value
+                    ),
+
+                    total:
+                    habitacion.precio *
+                    diasAPagar(
+                        fechaCheckIn.value,
+                        fechaCheckOut.value
+                    )
+                };
+
+
+
+                sessionStorage.setItem(
+                    "reservaPendiente",
+                    JSON.stringify(
+                        reservaPendiente
+                    )
+                );
+
+
+
+                const activeUser =
+                sessionStorage.getItem(
+                    "activeUser"
+                );
+
+
+
+                if (activeUser) {
+
+                    window.location.href =
+                    "irAPagar.html";
+
+                } else {
+
+                    window.location.href =
+                    "registro.html";
+                }
+            }
+        );
+    });
+}
+
+
+
+/* =========================
+   EVENTOS
+========================= */
+
+fechaCheckIn.addEventListener(
+    "change",
+    () => {
+
+        validarCheckIn();
+
+        habitacionesDisponibles();
+    }
 );
 
-checkOutInput.addEventListener(
-    "input",
-    verificarFiltros
+
+
+fechaCheckOut.addEventListener(
+    "change",
+    () => {
+
+        validarCheckOut();
+
+        habitacionesDisponibles();
+    }
 );
 
-cantPersonas.addEventListener(
+
+
+cantidadPersonas.addEventListener(
     "input",
-    verificarFiltros
+    habitacionesDisponibles
 );

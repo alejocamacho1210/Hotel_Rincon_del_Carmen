@@ -461,3 +461,173 @@
     gap:.8rem;
     padding:1.5rem;
 }
+
+.rooms-grid{
+
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:1.5rem;
+
+}
+
+/* =========================
+   PAYMENT PAGE
+========================= */
+
+.payment-page{
+
+    min-height:100vh;
+
+    padding:3rem;
+
+    background:
+    linear-gradient(
+        135deg,
+        #1f1f1f,
+        #2c2c2c
+    );
+
+    color:white;
+}
+
+
+
+/* =========================
+   HEADER
+========================= */
+
+.payment-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:2rem;
+
+    margin-bottom:3rem;
+}
+
+
+
+/* =========================
+   PAYMENT CONTENT
+========================= */
+
+.payment-content{
+
+    width:100%;
+}
+
+
+
+/* =========================
+   PAYMENT CARD
+========================= */
+
+.payment-card{
+
+    display:grid;
+
+    grid-template-columns:
+    1.2fr 1fr;
+
+    background:#262626;
+
+    border-radius:35px;
+
+    overflow:hidden;
+
+    border:
+    1px solid rgba(255,255,255,.08);
+
+    box-shadow:
+    0 20px 60px rgba(0,0,0,.35);
+}
+
+
+
+/* =========================
+   IMAGE
+========================= */
+
+.payment-room-image{
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+    min-height:700px;
+}
+
+
+
+/* =========================
+   RIGHT CONTENT
+========================= */
+
+.payment-room-content{
+
+    padding:3rem;
+
+    display:flex;
+
+    flex-direction:column;
+}
+
+
+
+/* =========================
+   ROOM HEADER
+========================= */
+
+.payment-room-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:flex-start;
+
+    gap:2rem;
+
+    margin-bottom:2rem;
+}
+
+
+
+/* =========================
+   SERVICES
+========================= */
+
+.payment-services{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:1rem;
+
+    margin-bottom:3rem;
+}
+
+
+
+/* =========================
+   DETAILS
+========================= */
+
+.payment-details{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(2,1fr);
+
+    gap:1rem;
+
+    margin-bottom:3rem;
+}

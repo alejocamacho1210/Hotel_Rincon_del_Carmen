@@ -29,7 +29,7 @@ let habitaciones =
 
 let reservaciones =
     JSON.parse(
-        localStorage.getItem("reservaciones")
+        localStorage.getItem("reservas")
     ) || [];
 
 
@@ -190,7 +190,7 @@ function guardarCambios(id) {
         .split(",");
 
     localStorage.setItem(
-        "hotelRooms",
+        "habitaciones",
         JSON.stringify(habitaciones)
     );
 
@@ -312,8 +312,8 @@ function cancelarReserva(index) {
         "cancelada";
 
     localStorage.setItem(
-        "reservaciones",
-        JSON.stringify(reservaciones)
+        "reservas",
+        JSON.stringify(reservas)
     );
 
     renderReservaciones();
@@ -355,8 +355,8 @@ function editarReserva(index) {
         nuevaFechaSalida;
 
     localStorage.setItem(
-        "reservaciones",
-        JSON.stringify(reservaciones)
+        "reservas",
+        JSON.stringify(reservas)
     );
 
     renderReservaciones();
