@@ -1,0 +1,160 @@
+/* =========================
+   PAGINA 1 - INICIO
+========================= */
+
+@media(max-width:1024px){
+
+    .hero-title{
+        font-size:2.4rem;
+    }
+
+    .gallery-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+
+
+@media(max-width:768px){
+
+    .top-nav{
+        gap:.6rem;
+    }
+
+    .hero-section{
+        height:72vh;
+    }
+
+    .hero-title{
+        font-size:2rem;
+    }
+
+    .gallery-grid{
+        grid-template-columns:1fr;
+    }
+
+    .gallery-card img{
+        height:240px;
+    }
+
+    .contact-box{
+        padding:1.5rem;
+    }
+
+    .room-preview{
+        height:300px;
+    }
+}
+
+
+
+@media(max-width:480px){
+
+    .hero-section{
+        height:65vh;
+    }
+
+    .hero-title{
+        font-size:1.7rem;
+    }
+
+    .hero-text{
+        font-size:.9rem;
+    }
+
+    .gallery-card img{
+        height:200px;
+    }
+
+    .room-preview{
+        height:220px;
+    }
+
+    .room-title{
+        font-size:1.5rem;
+    }
+}
+
+
+
+/* =========================
+   PAGINA 2 - RESERVAS
+========================= */
+
+@media(max-width:768px){
+
+    .reservation-title{
+        font-size:2rem;
+    }
+
+    .rooms-section{
+        grid-template-columns:1fr;
+    }
+
+    .room-card img{
+        height:230px;
+    }
+}
+
+
+
+@media(max-width:480px){
+
+    .reservation-page{
+        padding:1rem;
+    }
+
+    .reservation-title{
+        font-size:1.7rem;
+    }
+
+    .reservation-subtitle{
+        font-size:.9rem;
+    }
+
+    .room-card img{
+        height:210px;
+    }
+
+    .room-content{
+        padding:1rem;
+    }
+}
+
+
+
+/* =========================
+   PAGINA 3 - LOCALIZACIÓN
+========================= */
+
+@media(max-width:768px){
+
+    .contact-page{
+        padding:1rem;
+    }
+
+    .contact-container{
+        grid-template-columns:1fr;
+    }
+
+    .map-frame{
+        height:320px;
+    }
+}
+
+
+
+@media(max-width:480px){
+
+    .contact-title{
+        font-size:1.8rem;
+    }
+
+    .contact-card{
+        padding:1.2rem;
+    }
+
+    .map-frame{
+        height:250px;
+    }
+}
