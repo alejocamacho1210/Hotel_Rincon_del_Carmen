@@ -706,3 +706,138 @@ object-fit:cover;
     line-height:1.7;
 
 }
+
+.admin-title{
+    font-size:2.5rem;
+    font-weight:800;
+    color:white;
+}
+
+.admin-subtitle{
+    margin-top:1rem;
+    color:rgba(255,255,255,.75);
+    line-height:1.7;
+}
+
+.admin-stat-card h3{
+    font-size:1rem;
+    color:#64748b;
+}
+
+.admin-stat-card span{
+    font-size:2rem;
+    font-weight:800;
+    color:#0f172a;
+}
+
+.admin-room-content h2{
+    font-size:1.5rem;
+    font-weight:800;
+    color:#0f172a;
+}
+
+.admin-room-content label{
+    font-size:.9rem;
+    font-weight:700;
+    color:#334155;
+}
+
+.admin-room-content input,
+.admin-room-content textarea{
+    width:100%;
+    padding:1rem;
+    border:none;
+    outline:none;
+    border-radius:16px;
+    background:#f1f5f9;
+    color:#334155;
+    font-size:.95rem;
+}
+
+.admin-room-content textarea{
+    min-height:120px;
+    resize:none;
+}
+
+.save-room-btn{
+    border:none;
+    padding:1rem;
+    border-radius:18px;
+    background:#16a34a;
+    color:white;
+    font-size:1rem;
+    font-weight:700;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.save-room-btn:hover{
+    transform:translateY(-2px);
+    background:#15803d;
+}
+
+/* ===== ADMIN RESERVAS ===== */
+
+.admin-section-title{
+    margin:2rem 0 1rem;
+    font-size:2rem;
+    font-weight:800;
+    color:#0f172a;
+}
+
+.admin-reservations-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:1rem;
+}
+
+.reservation-admin-card{
+    padding:1.5rem;
+    border-radius:24px;
+    background:white;
+    box-shadow:0 10px 30px rgba(15,23,42,.08);
+
+    display:flex;
+    flex-direction:column;
+    gap:.8rem;
+}
+
+.reservation-admin-card h3{
+    font-size:1.3rem;
+    color:#0f172a;
+}
+
+.reservation-admin-card p{
+    color:#475569;
+    line-height:1.5;
+}
+
+.reservation-actions{
+    display:flex;
+    gap:1rem;
+    margin-top:1rem;
+}
+
+.edit-reservation-btn,
+.delete-reservation-btn{
+    flex:1;
+    border:none;
+    padding:1rem;
+    border-radius:16px;
+    color:white;
+    font-weight:700;
+    cursor:pointer;
+}
+
+.edit-reservation-btn{
+    background:#2563eb;
+}
+
+.delete-reservation-btn{
+    background:#ef4444;
+}
+
+.no-reservations{
+    color:#64748b;
+    font-size:1rem;
+}

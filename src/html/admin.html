@@ -1,3 +1,5 @@
+<!-- admin.html -->
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -5,14 +7,12 @@
 
     <meta charset="UTF-8">
 
-    <meta 
-        name="viewport" 
+    <meta
+        name="viewport"
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>
-        Panel Administrador
-    </title>
+    <title>Panel Administrador</title>
 
     <link rel="stylesheet" href="../css/base.css">
     <link rel="stylesheet" href="../css/layout.css">
@@ -26,61 +26,80 @@
 
         <section class="admin-hero">
 
-            <h1>
-                Panel Administrador
+            <h1 class="admin-title">
+                Panel Administrativo
             </h1>
 
-            <p>
-                Gestiona habitaciones, reservas y usuarios.
+            <p class="admin-subtitle">
+                Gestiona habitaciones, reservas y disponibilidad del hotel.
             </p>
 
         </section>
 
 
-        <section class="admin-actions">
+        <!-- ESTADISTICAS -->
+        <section class="admin-stats">
 
-            <article class="admin-card">
+            <article class="admin-stat-card">
 
-                <h2>
-                    Habitaciones
-                </h2>
+                <h3>Total Habitaciones</h3>
 
-                <p>
-                    Editar precios, disponibilidad y servicios.
-                </p>
-
-            </article>
-
-
-            <article class="admin-card">
-
-                <h2>
-                    Reservas
-                </h2>
-
-                <p>
-                    Gestionar reservas activas de clientes.
-                </p>
+                <span id="totalRooms">
+                    0
+                </span>
 
             </article>
 
 
-            <article class="admin-card">
+            <article class="admin-stat-card">
 
-                <h2>
-                    Usuarios
-                </h2>
+                <h3>Habitaciones Disponibles</h3>
 
-                <p>
-                    Ver usuarios registrados.
-                </p>
+                <span id="availableRooms">
+                    0
+                </span>
 
             </article>
 
         </section>
 
+
+        <!-- HABITACIONES -->
+        <section>
+
+            <h2 class="admin-section-title">
+                Gestión de Habitaciones
+            </h2>
+
+            <section
+                class="admin-rooms-grid"
+                id="adminRoomsGrid"
+            >
+
+            </section>
+
+        </section>
+
+
+        <!-- RESERVAS -->
+        <section class="admin-reservations-section">
+
+            <h2 class="admin-section-title">
+                Reservaciones realizadas
+            </h2>
+
+            <section
+                class="admin-reservations-grid"
+                id="adminReservationsGrid"
+            >
+
+            </section>
+
+        </section>
+
     </main>
 
+    <script src="/src/js/initRooms.js"></script>
     <script src="../js/admin.js"></script>
 
 </body>
