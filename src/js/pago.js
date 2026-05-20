@@ -19,7 +19,7 @@ if(!reservaPendiente){
 }
 
 const habitaciones = JSON.parse(
-    localStorage.getItem("hotelRooms")
+    localStorage.getItem("habitaciones")
 ) || []
 
 const reservas = JSON.parse(
@@ -187,7 +187,7 @@ confirmPaymentBtn.onclick = () => {
     ) || []
 
     const habitacionesActuales = JSON.parse(
-        localStorage.getItem("hotelRooms")
+        localStorage.getItem("habitaciones")
     ) || []
 
     const roomActual = habitacionesActuales.find(

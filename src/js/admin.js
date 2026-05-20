@@ -19,7 +19,7 @@ const adminReservationsGrid =
 
 let habitaciones =
     JSON.parse(
-        localStorage.getItem("hotelRooms")
+        localStorage.getItem("habitaciones")
     ) || [];
 
 
@@ -230,17 +230,17 @@ function renderReservaciones() {
         <article class="reservation-admin-card">
 
             <h3>
-                ${reserva.user.name}
+                ${reserva.userName}
             </h3>
 
             <p>
                 <strong>Documento:</strong>
-                ${reserva.user.identification}
+                ${reserva.userId}
             </p>
 
             <p>
                 <strong>Habitación:</strong>
-                ${reserva.room.tipo}
+                ${reserva.roomType}
             </p>
 
             <p>
@@ -255,7 +255,7 @@ function renderReservaciones() {
 
             <p>
                 <strong>Noches:</strong>
-                ${reserva.nights}
+                ${reserva.noches}
             </p>
 
             <p>
@@ -313,7 +313,7 @@ function cancelarReserva(index) {
 
     localStorage.setItem(
         "reservas",
-        JSON.stringify(reservas)
+        JSON.stringify(reservaciones)
     );
 
     renderReservaciones();
@@ -356,7 +356,7 @@ function editarReserva(index) {
 
     localStorage.setItem(
         "reservas",
-        JSON.stringify(reservas)
+        JSON.stringify(reservaciones)
     );
 
     renderReservaciones();

@@ -226,6 +226,7 @@ Proyecto desarrollado por:
 
 ```txt
 Juan David Arias Patiño
+Alejandro Camacho Becerra
 ```
 
 ---
