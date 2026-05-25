@@ -1,455 +1,283 @@
 // leerInputs.js
 
-const contenedorHabitaciones =
+const roomsContainer =
 document.querySelector("#roomsContainer");
 
-const fechaCheckIn =
+const checkIn =
 document.querySelector("#checkIn");
 
-const fechaCheckOut =
+const checkOut =
 document.querySelector("#checkOut");
 
-const cantidadPersonas =
+const personasInput =
 document.querySelector("#personas");
 
+const habitaciones =
+JSON.parse(localStorage.getItem("habitaciones")) || [];
 
+const reservas =
+JSON.parse(localStorage.getItem("reservas")) || [];
 
+const imagenes = {
 
-
-/* =========================
-   IMÁGENES
-========================= */
-
-const imagenesHabitaciones = {
-
-    "Estandar King":
-    "../images/estandar_king.jpeg",
-
-    "Estandar Double":
-    "../images/estandar_double.jpeg",
-
-    "Ejecutiva King":
-    "../images/ejecutiva_king.jpeg",
-
-    "Habitacion premium":
-    "../images/habitacion_premium.jpeg",
-
-    "Apart Hotel":
-    "../images/apart_hotel.jpeg",
-
-    "Junior Suite":
-    "../images/suite_junior.jpeg",
-
-    "Suite Familiar":
-    "../images/suite_familiar.jpeg",
-
-    "Suite Presidencial":
-    "../images/suite_presidencial.jpeg",
-
-    "Habitacion Accesible":
-    "../images/habitacion_accesible.jpeg"
+    "Estandar King": "../images/estandar_king.jpeg",
+    "Estandar Double": "../images/estandar_double.jpeg",
+    "Ejecutiva King": "../images/ejecutiva_king.jpeg",
+    "Habitacion premium": "../images/habitacion_premium.jpeg",
+    "Apart Hotel": "../images/apart_hotel.jpeg",
+    "Junior Suite": "../images/suite_junior.jpeg",
+    "Suite Familiar": "../images/suite_familiar.jpeg",
+    "Suite Presidencial": "../images/suite_presidencial.jpeg",
+    "Habitacion Accesible": "../images/habitacion_accesible.jpeg"
 };
 
+// ======================
+// UTILIDADES
+// ======================
 
-
-/* =========================
-   VALIDACIONES FECHAS
-========================= */
-
-function validarCheckIn() {
-
-    if (!fechaCheckIn.value) return;
-
-    const hoy =
-    new Date().toISOString().split("T")[0];
-
-
-
-    if (fechaCheckIn.value <= hoy) {
-
-        alert(
-            "La fecha de check in debe ser posterior al día de hoy"
-        );
-
-        fechaCheckIn.value = "";
-
-        return;
-    }
+function calcularNoches(inicio, fin){
+    const entrada = new Date(inicio);
+    const salida = new Date(fin);
+    return (salida - entrada) / (1000 * 60 * 60 * 24);
 }
 
+// ======================
+// RENDER HABITACIONES
+// ======================
 
+function renderRooms(){
 
-function validarCheckOut() {
+    const personas = Number(personasInput.value);
 
-    if (
-        !fechaCheckIn.value ||
-        !fechaCheckOut.value
-    ) return;
-
-
-
-    if (
-        fechaCheckOut.value <=
-        fechaCheckIn.value
-    ) {
-
-        alert(
-            "La fecha de salida no puede ser antes o igual al check in"
-        );
-
-        fechaCheckOut.value = "";
-    }
-}
-
-
-
-/* =========================
-   DÍAS A PAGAR
-========================= */
-
-export function diasAPagar(
-    checkIn,
-    checkOut
-) {
-
-    const entrada =
-    new Date(checkIn);
-
-    const salida =
-    new Date(checkOut);
-
-    const diferencia =
-    salida - entrada;
-
-    return diferencia / (
-        1000 * 60 * 60 * 24
-    );
-}
-
-
-
-/* =========================
-   DISPONIBILIDAD
-========================= */
-
-function habitacionesDisponibles() {
-
-    const habitaciones =
-    JSON.parse(
-        localStorage.getItem("habitaciones")
-    )  || [];
-
-    const personas =
-    Number(cantidadPersonas.value);
-
-
-
-    if (
-        !fechaCheckIn.value ||
-        !fechaCheckOut.value ||
-        !cantidadPersonas.value
-    ) {
-
-        contenedorHabitaciones.innerHTML = "";
-
+    if(!checkIn.value || !checkOut.value || !personas){
+        roomsContainer.innerHTML = "";
         return;
     }
 
+    const activeUser =
+    JSON.parse(sessionStorage.getItem("activeUser"));
 
+    const reservaUsuario =
+    activeUser
+        ? reservas.find(r => r.userId === activeUser.id)
+        : null;
 
-    const reservas =
-    JSON.parse(
-        localStorage.getItem("reservas")
-    ) || [];
+    const filtradas =
+    habitaciones.filter(room => {
 
+        const min = Number(room["capacidad minima"]);
+        const max = Number(room["capacidad maxima"]);
 
-
-    const candidatas =
-    habitaciones.filter(habitacion => {
-
-        const min =
-        Number(
-            habitacion["capacidad minima"]
-        );
-
-        const max =
-        Number(
-            habitacion["capacidad maxima"]
-        );
-
-
-
-        const cumpleCapacidad =
-        personas >= min &&
-        personas <= max;
-
-
-
-        const reservasHabitacion =
-        reservas.filter(reserva =>
-            reserva.habitacion.tipo ===
-            habitacion.tipo
-        ).length;
-
-
-
-        const disponibles =
-        habitacion.cantidadDisponibles -
-        reservasHabitacion;
-
-
-
-        return (
-            cumpleCapacidad &&
-            disponibles > 0
-        );
+        return personas >= min && personas <= max;
     });
 
-
-
-    renderizarHabitaciones(
-        candidatas
-    );
-}
-
-
-
-/* =========================
-   RENDER
-========================= */
-
-function renderizarHabitaciones(
-    habitacionesFiltradas
-) {
-
-    if (
-        habitacionesFiltradas.length === 0
-    ) {
-
-        contenedorHabitaciones.innerHTML = `
-
-            <div class="no-rooms">
-
-                <h2>
-                    No hay habitaciones disponibles
-                </h2>
-
+    if(filtradas.length <= 0){
+        roomsContainer.innerHTML = `
+            <div class="empty-room-card">
+                <h2>No hay habitaciones disponibles</h2>
             </div>
-
         `;
-
         return;
     }
 
+    roomsContainer.innerHTML =
+    filtradas.map(room => {
 
+        const estaReservada = reservas.some(
+            r => r.roomId === room.id
+        );
 
-    contenedorHabitaciones.innerHTML =
-    habitacionesFiltradas.map(habitacion => {
+        let botonHTML = "";
 
-        const imagen =
-        imagenesHabitaciones[
-            habitacion.tipo
-        ];
+        if (!activeUser) {
+            botonHTML = `
+                <button class="reserve-button" data-id="${room.id}">
+                    Reservar
+                </button>
+            `;
+        }
 
+        else if (reservaUsuario) {
 
+            if (reservaUsuario.roomId === room.id) {
+                botonHTML = `
+                    <button class="cancel-button" data-id="${room.id}">
+                        Cancelar reserva
+                    </button>
+                `;
+            } else {
+                botonHTML = `
+                    <button disabled>
+                        Ya has reservado una habitación
+                    </button>
+                `;
+            }
+
+        }
+
+        else if (estaReservada) {
+            botonHTML = `
+                <button disabled>
+                    Reservada
+                </button>
+            `;
+        }
+
+        else {
+            botonHTML = `
+                <button class="reserve-button" data-id="${room.id}">
+                    Reservar
+                </button>
+            `;
+        }
 
         return `
-
         <article class="room-card">
 
             <img
+                src="${imagenes[room.tipo]}"
                 class="room-image"
-                src="${imagen}"
-                alt="${habitacion.tipo}"
             >
 
             <div class="room-info">
 
-                <h2>
-                    ${habitacion.tipo}
-                </h2>
+                <h2>${room.tipo}</h2>
 
-                <p>
-                    ${habitacion.descripcion}
-                </p>
+                <p>${room.descripcion}</p>
 
                 <div class="room-services">
-
-                    ${habitacion.servicios.map(servicio => `
-
-                        <span>
-                            ${servicio}
-                        </span>
-
+                    ${room.servicios.map(servicio => `
+                        <span>${servicio}</span>
                     `).join("")}
-
                 </div>
 
-                <div class="room-price">
+                <strong class="room-price">
+                    $${room.precio.toLocaleString()}
+                </strong>
 
-                    $${habitacion.precio.toLocaleString()}
-                    / noche
-
-                </div>
-
-                <button
-                    class="reserve-button"
-                    data-tipo="${habitacion.tipo}"
-                >
-                    Reservar
-                </button>
+                ${botonHTML}
 
             </div>
 
         </article>
-
         `;
-
     }).join("");
 
-
-
-    activarBotonesReserva();
+    activarReservas();
+    activarCancelaciones();
 }
 
+// ======================
+// RESERVAR
+// ======================
 
-
-/* =========================
-   RESERVAR
-========================= */
-
-function activarBotonesReserva() {
+function activarReservas(){
 
     const botones =
-    document.querySelectorAll(
-        ".reserve-button"
-    );
+    document.querySelectorAll(".reserve-button");
 
+    botones.forEach(btn => {
 
+        btn.addEventListener("click", () => {
 
-    botones.forEach(boton => {
+            const activeUser =
+            JSON.parse(sessionStorage.getItem("activeUser"));
 
-        boton.addEventListener(
-            "click",
-            () => {
-
-                const habitaciones =
-                JSON.parse(
-                    localStorage.getItem("habitaciones")
-                ) || [];
-
-                const tipo =
-                boton.dataset.tipo;
-
-                const habitacion =
-                habitaciones.find(
-                    h => h.tipo === tipo
-                );
-
-
-
-                if (!habitacion) {
-
-                    alert(
-                        "No hay información de reserva"
-                    );
-
-                    return;
-                }
-
-
-
-                const reservaPendiente = {
-
-                    roomId: habitacion.id,
-
-                    checkIn:
-                    fechaCheckIn.value,
-
-                    checkOut:
-                    fechaCheckOut.value,
-
-                    personas:
-                    cantidadPersonas.value,
-
-                    noches:
-                    diasAPagar(
-                        fechaCheckIn.value,
-                        fechaCheckOut.value
-                    ),
-
-                    total:
-                    habitacion.precio *
-                    diasAPagar(
-                        fechaCheckIn.value,
-                        fechaCheckOut.value
-                    )
-                };
-
-
-
-                sessionStorage.setItem(
-                    "reservaPendiente",
-                    JSON.stringify(
-                        reservaPendiente
-                    )
-                );
-
-
-
-                const activeUser =
-                sessionStorage.getItem(
-                    "activeUser"
-                );
-
-
-
-                if (activeUser) {
-
-                    window.location.href =
-                    "irAPagar.html";
-
-                } else {
-
-                    window.location.href =
-                    "registro.html";
-                }
+            if(!activeUser){
+                alert("Debes iniciar sesión en la página principal");
+                location.href = "pag-01.html";
+                return;
             }
-        );
+
+            const yaReservo = reservas.some(
+                r => r.userId === activeUser.id
+            );
+
+            if(yaReservo){
+                alert("Ya has reservado una habitación");
+                return;
+            }
+
+            const roomId = Number(btn.dataset.id);
+
+            const room = habitaciones.find(
+                r => r.id === roomId
+            );
+
+            const noches = calcularNoches(
+                checkIn.value,
+                checkOut.value
+            );
+
+            const nuevaReserva = {
+                reservationId: Date.now(),
+                userId: activeUser.id,
+                userName: activeUser.name,
+                roomId: room.id,
+                roomType: room.tipo,
+                checkIn: checkIn.value,
+                checkOut: checkOut.value,
+                personas: personasInput.value,
+                noches,
+                total: room.precio * noches
+            };
+
+            reservas.push(nuevaReserva);
+
+            localStorage.setItem(
+                "reservas",
+                JSON.stringify(reservas)
+            );
+
+            renderRooms();
+
+            alert("Habitación reservada correctamente");
+        });
     });
 }
 
+// ======================
+// CANCELAR RESERVA
+// ======================
 
+function activarCancelaciones(){
 
-/* =========================
-   EVENTOS
-========================= */
+    const botones =
+    document.querySelectorAll(".cancel-button");
 
-fechaCheckIn.addEventListener(
-    "change",
-    () => {
+    botones.forEach(btn => {
 
-        validarCheckIn();
+        btn.addEventListener("click", () => {
 
-        habitacionesDisponibles();
-    }
-);
+            const activeUser =
+            JSON.parse(sessionStorage.getItem("activeUser"));
 
+            const roomId = Number(btn.dataset.id);
 
+            const index = reservas.findIndex(
+                r => r.userId === activeUser.id &&
+                     r.roomId === roomId
+            );
 
-fechaCheckOut.addEventListener(
-    "change",
-    () => {
+            if(index !== -1){
 
-        validarCheckOut();
+                reservas.splice(index, 1);
 
-        habitacionesDisponibles();
-    }
-);
+                localStorage.setItem(
+                    "reservas",
+                    JSON.stringify(reservas)
+                );
 
+                renderRooms();
+            }
+        });
+    });
+}
 
+// ======================
+// EVENTOS
+// ======================
 
-cantidadPersonas.addEventListener(
-    "input",
-    habitacionesDisponibles
-);
+checkIn.addEventListener("change", renderRooms);
+checkOut.addEventListener("change", renderRooms);
+personasInput.addEventListener("input", renderRooms);

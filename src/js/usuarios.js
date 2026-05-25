@@ -6,12 +6,7 @@ function leerUsuarios() {
 
 }
 
-
-function guardarUsuario(nuevoUsuario) {
-
-    const usuarios = leerUsuarios();
-
-    usuarios.push(nuevoUsuario);
+function guardarUsuarios(usuarios) {
 
     localStorage.setItem(
         "usuarios",
@@ -20,20 +15,40 @@ function guardarUsuario(nuevoUsuario) {
 
 }
 
+function guardarUsuario(nuevoUsuario) {
 
-function buscarUsuarioPorDocumento(documento) {
+    const usuarios = leerUsuarios();
+
+    usuarios.push(nuevoUsuario);
+
+    guardarUsuarios(usuarios);
+
+}
+
+function buscarUsuario(documento, password) {
 
     const usuarios = leerUsuarios();
 
     return usuarios.find(
-        usuario => usuario.documento === documento
+        usuario =>
+            usuario.identification === documento &&
+            usuario.password === password
     );
 
 }
 
+function obtenerUsuarioActivo() {
 
-export {
-    leerUsuarios,
-    guardarUsuario,
-    buscarUsuarioPorDocumento
-};
+    return JSON.parse(
+        sessionStorage.getItem("activeUser")
+    );
+
+}
+
+function cerrarSesion() {
+
+    sessionStorage.removeItem(
+        "activeUser"
+    );
+
+}
